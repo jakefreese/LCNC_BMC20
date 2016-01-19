@@ -1,36 +1,36 @@
 # HAL config file for Pico Systems USC board
 #
 # Connect motion controller I/Os
-#
+# Hurco BMC20 Retrofit Jake Freese 1/18/2016
 
 # connect limit/home switch outputs to motion controller
 net Xminlim <= ppmc.0.din.01.in
 net Xminlim => axis.0.neg-lim-sw-in
 net Xmaxlim <= ppmc.0.din.02.in
 net Xmaxlim => axis.0.pos-lim-sw-in
-net Xhome <= ppmc.0.din.00.in
-net Xhome => axis.0.home-sw-in
+#net Xhome <= ppmc.0.din.00.in
+#net Xhome => axis.0.home-sw-in
 
-net Yminlim <= ppmc.0.din.05.in
+net Yminlim <= ppmc.0.din.04.in
 net Yminlim => axis.1.neg-lim-sw-in
-net Ymaxlim <= ppmc.0.din.06.in
+net Ymaxlim <= ppmc.0.din.05.in
 net Ymaxlim => axis.1.pos-lim-sw-in
-net Yhome <= ppmc.0.din.04.in
-net Yhome => axis.1.home-sw-in
+#net Yhome <= ppmc.0.din.04.in
+#net Yhome => axis.1.home-sw-in
 
-net Zminlim <= ppmc.0.din.09.in
+net Zminlim <= ppmc.0.din.07.in
 net Zminlim => axis.2.neg-lim-sw-in
-net Zmaxlim <= ppmc.0.din.10.in
+net Zmaxlim <= ppmc.0.din.08.in
 net Zmaxlim => axis.2.pos-lim-sw-in
-net Zhome <= ppmc.0.din.08.in
-net Zhome => axis.2.home-sw-in
+#net Zhome <= ppmc.0.din.08.in
+#net Zhome => axis.2.home-sw-in
 
-net Aminlim <= ppmc.0.din.12.in
-net Aminlim => axis.3.neg-lim-sw-in
-net Amaxlim <= ppmc.0.din.13.in
-net Amaxlim => axis.3.pos-lim-sw-in
-net Ahome <= ppmc.0.din.11.in
-net Ahome => axis.3.home-sw-in
+#net Aminlim <= ppmc.0.din.12.in
+#net Aminlim => axis.3.neg-lim-sw-in
+#net Amaxlim <= ppmc.0.din.13.in
+#net Amaxlim => axis.3.pos-lim-sw-in
+#net Ahome <= ppmc.0.din.11.in
+#net Ahome => axis.3.home-sw-in
 
 
 # connect index pulses to motion controller
@@ -67,9 +67,9 @@ net SpindleFwd => motion.spindle-forward
 net SpindleRev <= ppmc.0.dout.01.out
 net SpindleRev => motion.spindle-reverse
 
-# connect spindle brake to I/O controller
-net SpindleBrakeOn <= ppmc.0.dout.02.out
-net SpindleBrakeOn => motion.spindle-brake
+# connect spindle brake to I/O controller 
+#net SpindleBrakeOn <= ppmc.0.dout.02.out
+#net SpindleBrakeOn => motion.spindle-brake
 
 # connect mist/flood coolant to I/O controller
 net MistOn <= ppmc.0.dout.03.out
