@@ -96,22 +96,35 @@ newsig SpindleFwd bit
 newsig SpindleRev bit
 linksp SpindleFwd <= ppmc.0.dout.07.out
 linksp SpindleFwd => motion.spindle-forward
-linksp SpindleRev <= ppmc.0.dout.01.out      #no reverse run
+linksp SpindleRev <= ppmc.0.dout.01.out      #no reverse run at the moment
 linksp SpindleRev => motion.spindle-reverse
 
 # Spindle Cooler             SSR 2
-
+# linksp        <= ppmc.0.dout.02.out
+# linksp        => iocontrol.0.
 
 # Servo Alarm Reset          SSR 4
+# linksp        <= ppmc.0.dout.04.out
+# linksp        => iocontrol.0.
 
 # Low Speed Winding Select   SSR 5
+# linksp        <= ppmc.0.dout.05.out
+# linksp        => iocontrol.0.
 
 # Orient Command             SSR 6
 # Orient Complete            DI 9  
+# linksp        <= ppmc.0.dout.06.out
+# linksp        => iocontrol.0.
+# linksp        <= ppmc.0.din.09.in
+# linksp        => iocontrol.0.
 
 # Spindle E STOP             SSR 7
+# linksp        <= ppmc.0.dout.07.out
+# linksp        => iocontrol.0.
 
 # Spindle Alarm              DI 10
+# linksp        <= ppmc.0.din.10.in
+# linksp        => iocontrol.0.
 
 
 # connect spindle speed up/down to I/O controller  Speed command on DAC CARD
@@ -123,40 +136,101 @@ linksp SpindleRev => motion.spindle-reverse
 #linksp SpindleDown => motion.spindle-decr-speed
 
 # connect spindle brake to I/O controller       #no spindle brake 
-newsig SpindleBrakeOn bit
-linksp SpindleBrakeOn <= ppmc.0.dout.02.out
-linksp SpindleBrakeOn => motion.spindle-brake     
+#newsig SpindleBrakeOn bit
+#linksp SpindleBrakeOn <= ppmc.0.dout.02.out
+#linksp SpindleBrakeOn => motion.spindle-brake     
 
 # connect mist/flood coolant to I/O controller  SSR 16 
-newsig MistOn bit
+#newsig MistOn bit
 newsig FloodOn bit
-linksp MistOn <= ppmc.0.dout.03.out             #No Mist 
-linksp MistOn => iocontrol.0.coolant-mist
-linksp FloodOn <= ppmc.0.dout.15.out            # ON 2 SSR 8 
+#linksp MistOn <= ppmc.0.dout.03.out             #No Mist at the moment 
+#linksp MistOn => iocontrol.0.coolant-mist
+linksp FloodOn <= ppmc.0.dout.16.out           
 linksp FloodOn => iocontrol.0.coolant-flood
 
 # Way Lube Pump       SSR 3
 # Way Lube Level      DI 27
+# linksp LubeOn <= ppmc.0.dout.03.out
+# linksp LubeOn => iocontrol.0.lube
+# linksp lube_level <= ppmc.0.din.27.in
+# linksp lube_level => iocontrol.0.lube_level
+
 
 # Air Pressure Switch DI 13 
+# linksp        <= ppmc.0.din.13.in
+# linksp        => iocontrol.0.
 
 # X Torque            DI 16
+# linksp        <= ppmc.0.din.16.in
+# linksp        => iocontrol.0.
+
 # Y Torque            DI 17
+# linksp        <= ppmc.0.din.17.in
+# linksp        => iocontrol.0.
+
 # Z Torque            DI 18
+# linksp        <= ppmc.0.din.18.in
+# linksp        => iocontrol.0.
+
 # S Torque            DI 19
+# linksp        <= ppmc.0.din.19.in
+# linksp        => iocontrol.0.
 
 # TOOL CHANGER
 # Mag POS             DI 20
+# linksp        <= ppmc.0.din.20.in
+# linksp        => iocontrol.0.
+
 # Mag Right           DI 21  SSR 11
+# linksp        <= ppmc.0.din.21.in
+# linksp        => iocontrol.0.
+# linksp        <= ppmc.0.dout.11.out
+# linksp        => iocontrol.0.
+
 # Mag Left            DI 22  SSR 12
+# linksp        <= ppmc.0.din.22.in
+# linksp        => iocontrol.0.
+# linksp        <= ppmc.0.dout.12.out
+# linksp        => iocontrol.0.
+
 # Mag Down            DI 23  SSR 13
+# linksp        <= ppmc.0.din.23.in
+# linksp        => iocontrol.0.
+# linksp        <= ppmc.0.dout.13.out
+# linksp        => iocontrol.0.
+
 # Mag UP              DI 24  SSR 14
-# Mag REF             DI 25  
+# linksp        <= ppmc.0.din.24.in
+# linksp        => iocontrol.0.
+# linksp        <= ppmc.0.dout.14.out
+# linksp        => iocontrol.0.
+
+# Mag REF             DI 25 
+# linksp        <= ppmc.0.din.25.in
+# linksp        => iocontrol.0.
+
 # Tool Unclamp BUT    DI 26
-# Tool Unclamp        SSR 10 
+# linksp        <= ppmc.0.din.26.in
+# linksp        => iocontrol.0.
+
+# Tool Unclamp        SSR 10
+# linksp        <= ppmc.0.dout.10.out
+# linksp        => iocontrol.0.
+
 # Spindle Limit +     DI 11
+# linksp        <= ppmc.0.din.11.in
+# linksp        => iocontrol.0.
+
 # Spindle Limit -     DI 12 
+# linksp        <= ppmc.0.din.12.in
+# linksp        => iocontrol.0.
+
 # Mag ROTATE          SSR 9
+# linksp        <= ppmc.0.dout.09.out
+# linksp        => iocontrol.0.
+
 
 # Cabinet Coolers     SSR 15
+# linksp        <= ppmc.0.dout.15.out
+# linksp        => iocontrol.0.
 
