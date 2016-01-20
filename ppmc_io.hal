@@ -11,8 +11,8 @@ linksp Xminlim <= ppmc.0.din.01.in-not
 linksp Xminlim => axis.0.neg-lim-sw-in
 linksp Xmaxlim <= ppmc.0.din.02.in-not
 linksp Xmaxlim => axis.0.pos-lim-sw-in
-linksp Xhome <= ppmc.0.din.00.in-not      #need to address
-linksp Xhome => axis.0.home-sw-in
+linksp Xmaxlim => axis.0.pos-lim-sw-in
+linksp Xminlim axis.0.home-sw-in
 
 newsig Yminlim bit
 newsig Ymaxlim  bit
@@ -21,8 +21,8 @@ linksp Yminlim <= ppmc.0.din.04.in-not
 linksp Yminlim => axis.1.neg-lim-sw-in
 linksp Ymaxlim <= ppmc.0.din.05.in-not
 linksp Ymaxlim => axis.1.pos-lim-sw-in
-linksp Yhome <= ppmc.0.din.04.in-not    #need to address
-linksp Yhome => axis.1.home-sw-in
+linksp Ymaxlim => axis.0.pos-lim-sw-in
+linksp Yminlim axis.0.home-sw-in
 
 newsig Zminlim bit
 newsig Zmaxlim  bit
@@ -31,18 +31,18 @@ linksp Zminlim <= ppmc.0.din.07.in-not
 linksp Zminlim => axis.2.neg-lim-sw-in
 linksp Zmaxlim <= ppmc.0.din.08.in-not
 linksp Zmaxlim => axis.2.pos-lim-sw-in
-linksp Zhome <= ppmc.0.din.08.in-not     #need to address
-linksp Zhome => axis.2.home-sw-in        
+linksp Zmaxlim => axis.0.pos-lim-sw-in
+linksp Zminlim axis.0.home-sw-in
 
-newsig Aminlim bit                     #need to address
-newsig Amaxlim  bit
-newsig Ahome bit
-linksp Aminlim <= ppmc.0.din.12.in-not
-linksp Aminlim => axis.3.neg-lim-sw-in
-linksp Amaxlim <= ppmc.0.din.13.in-not
-linksp Amaxlim => axis.3.pos-lim-sw-in
-linksp Ahome <= ppmc.0.din.11.in
-linksp Ahome => axis.3.home-sw-in
+#newsig Aminlim bit                    
+#newsig Amaxlim  bit
+#newsig Ahome bit
+#linksp Aminlim <= ppmc.0.din.12.in-not
+#linksp Aminlim => axis.3.neg-lim-sw-in
+#linksp Amaxlim <= ppmc.0.din.13.in-not
+#linksp Amaxlim => axis.3.pos-lim-sw-in
+#linksp Amaxlim => axis.0.pos-lim-sw-in
+#linksp Aminlim axis.0.home-sw-in
 
 
 # connect index pulses to motion controller
