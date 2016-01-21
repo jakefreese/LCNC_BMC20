@@ -42,14 +42,14 @@ linksp Amaxlim => axis.3.pos-lim-sw-in
 linksp Xminlim axis.3.home-sw-in
 
 # Servo Alarms  X DI0, Y DI3, Z DI6, A DI9
-# linksp Xalarm <= ppmc.0.dout.00.out
-# linksp Xalarm => iocontrol.0.
-# linksp Yalarm <= ppmc.0.dout.03.out
-# linksp Yalarm => iocontrol.0.
-# linksp Zalarm <= ppmc.0.dout.06.out
-# linksp Zalarm => iocontrol.0.
-# linksp Aalarm <= ppmc.0.dout.09.out
-# linksp Aalarm => iocontrol.0.
+# linksp amp-fault-in <= ppmc.0.din.00.in
+# linksp amp-fault-in => axis.00.amp-fault-in
+# linksp amp-fault-in <= ppmc.0.din.03.in
+# linksp amp-fault-in => axis.01.amp-fault-in
+# linksp amp-fault-in <= ppmc.0.in.06.in
+# linksp amp-fault-in => axis.02.amp-fault-in
+# linksp amp-fault-in <= ppmc.0.in.09.in
+# linksp amp-fault-in => axis.03.amp-fault-in
 
 
 # connect index pulses to motion controller
@@ -99,13 +99,19 @@ linksp emc-estop-reset estop-latch.0.reset
 #linksp EstopWrite => iocontrol.0.user-enable-out
 #estop may need to be inverted
 
+# Servo Amp Enable      SSR1
+# newsig Amp-enable bit
+# linksp Amp-enable <= ppmc.0.dout.01.out
+# linksp Amp-enable => axis.01.amp-enable-out
+
+
 # connect spindle fwd/rev to I/O controller Spindle Forward Run 1 SSR 8
-newsig SpindleFwd bit
-newsig SpindleRev bit
-linksp SpindleFwd <= ppmc.0.dout.08.out
-linksp SpindleFwd => motion.spindle-forward
-linksp SpindleRev <= ppmc.0.dout.01.out      #no reverse run at the moment
-linksp SpindleRev => motion.spindle-reverse
+# newsig SpindleFwd bit
+# newsig SpindleRev bit
+# linksp SpindleFwd <= ppmc.0.dout.08.out
+# linksp SpindleFwd => motion.spindle-forward
+# linksp SpindleRev <= ppmc.0.dout.01.out      #no reverse run at the moment
+# linksp SpindleRev => motion.spindle-reverse
 
 # Spindle Cooler             SSR 2
 # linksp        <= ppmc.0.dout.02.out
@@ -150,16 +156,16 @@ linksp SpindleRev => motion.spindle-reverse
 
 # connect mist/flood coolant to I/O controller  SSR 16 
 #newsig MistOn bit
-newsig FloodOn bit
+#newsig FloodOn bit
 #linksp MistOn <= ppmc.0.dout.03.out             #No Mist at the moment 
 #linksp MistOn => iocontrol.0.coolant-mist
-linksp FloodOn <= ppmc.0.dout.16.out           
-linksp FloodOn => iocontrol.0.coolant-flood
+#linksp FloodOn <= ppmc.0.dout.16.out           
+#linksp FloodOn => iocontrol.0.coolant-flood
 
 # Way Lube Pump       SSR 3
 # Way Lube Level      DI 27
-# linksp LubeOn <= ppmc.0.dout.03.out
-# linksp LubeOn => iocontrol.0.lube
+# linksp lube <= ppmc.0.dout.03.out
+# linksp lube => iocontrol.0.lube
 # linksp lube_level <= ppmc.0.din.27.in
 # linksp lube_level => iocontrol.0.lube_level
 
