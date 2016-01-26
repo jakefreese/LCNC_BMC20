@@ -42,14 +42,18 @@ linksp Amaxlim => axis.3.pos-lim-sw-in
 linksp Xminlim axis.3.home-sw-in
 
 # Servo Alarms  X DI0, Y DI3, Z DI6, A DI9
- linksp amp-fault-in <= ppmc.0.din.00.in
- linksp amp-fault-in => axis.00.amp-fault-in
- linksp amp-fault-in <= ppmc.0.din.03.in
- linksp amp-fault-in => axis.01.amp-fault-in
- linksp amp-fault-in <= ppmc.0.in.06.in
- linksp amp-fault-in => axis.02.amp-fault-in
- linksp amp-fault-in <= ppmc.0.in.09.in
- linksp amp-fault-in => axis.03.amp-fault-in
+ newsig amp-fault-x bit
+ linksp amp-fault-x <= ppmc.0.din.00.in
+ linksp amp-fault-x => axis.00.amp-fault-x
+ newsig amp-fault-y bit
+ linksp amp-fault-y <= ppmc.0.din.03.in
+ linksp amp-fault-y => axis.01.amp-fault-y
+ newsig amp-fault-z bit
+ linksp amp-fault-z <= ppmc.0.in.06.in
+ linksp amp-fault-z => axis.02.amp-fault-z
+ newsig amp-fault-a bit
+ linksp amp-fault-a <= ppmc.0.in.09.in
+ linksp amp-fault-a => axis.03.amp-fault-a
 
 
 # connect index pulses to motion controller
