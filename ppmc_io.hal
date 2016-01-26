@@ -42,14 +42,14 @@ linksp Amaxlim => axis.3.pos-lim-sw-in
 linksp Xminlim axis.3.home-sw-in
 
 # Servo Alarms  X DI0, Y DI3, Z DI6, A DI9
-# linksp amp-fault-in <= ppmc.0.din.00.in
-# linksp amp-fault-in => axis.00.amp-fault-in
-# linksp amp-fault-in <= ppmc.0.din.03.in
-# linksp amp-fault-in => axis.01.amp-fault-in
-# linksp amp-fault-in <= ppmc.0.in.06.in
-# linksp amp-fault-in => axis.02.amp-fault-in
-# linksp amp-fault-in <= ppmc.0.in.09.in
-# linksp amp-fault-in => axis.03.amp-fault-in
+ linksp amp-fault-in <= ppmc.0.din.00.in
+ linksp amp-fault-in => axis.00.amp-fault-in
+ linksp amp-fault-in <= ppmc.0.din.03.in
+ linksp amp-fault-in => axis.01.amp-fault-in
+ linksp amp-fault-in <= ppmc.0.in.06.in
+ linksp amp-fault-in => axis.02.amp-fault-in
+ linksp amp-fault-in <= ppmc.0.in.09.in
+ linksp amp-fault-in => axis.03.amp-fault-in
 
 
 # connect index pulses to motion controller
@@ -99,10 +99,20 @@ linksp emc-estop-reset estop-latch.0.reset
 #linksp EstopWrite => iocontrol.0.user-enable-out
 #estop may need to be inverted
 
-# Servo Amp Enable      SSR1
-# newsig Amp-enable bit
-# linksp Amp-enable <= ppmc.0.dout.01.out
-# linksp Amp-enable => axis.01.amp-enable-out
+# Servo Amp Enable      SSR1 
+newsig Amp-enable-x bit
+linksp Amp-enable-x <= ppmc.0.dout.01.out
+linksp Amp-enable-x => axis.01.amp-enable-out
+
+# Servo Amp Enable      SSR2 temp till current amp gets built
+newsig Amp-enable-y bit
+linksp Amp-enable-y <= ppmc.0.dout.02.out
+linksp Amp-enable-y => axis.02.amp-enable-out
+
+# Servo Amp Enable      SSR3  temp till current amp gets built
+newsig Amp-enable-z bit
+linksp Amp-enable-z <= ppmc.0.dout.03.out
+linksp Amp-enable-z => axis.03.amp-enable-out
 
 
 # connect spindle fwd/rev to I/O controller Spindle Forward Run 1 SSR 8
