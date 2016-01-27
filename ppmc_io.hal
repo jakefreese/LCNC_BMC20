@@ -70,16 +70,12 @@ linksp Xminlim axis.3.home-sw-in
 
 # Servo Alarms  X DI0, Y DI3, Z DI6, A DI9
 
-newsig amp-fault-x bit
 net amp-fault-x axis.00.amp-fault-in ppmc.0.din.01.in
 
-newsig amp-fault-y bit
 net amp-fault-y axis.01.amp-fault-in ppmc.0.din.02.in
 
-newsig amp-fault-z bit
 net amp-fault-z axis.02.amp-fault-in ppmc.0.din.03.in
 
-newsig amp-fault-a bit
 net amp-fault-a axis.03.amp-fault-in ppmc.0.din.04.in
 
 
