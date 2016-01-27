@@ -4,6 +4,12 @@
 # HURCO BMC30 JAKE FREESE 01/19/2016
 
 # connect limit/home switch outputs to motion controller
+#newsig Xminlim bit
+#newsig Xmaxlim bit
+#newsig Xhome bit
+#net Xminlim axis.0.neg-lim-sw-in ppmc.0.din.01.in-not
+#net Xmaxlim axis.0.pos-lim-sw-in ppmc.0.din.02.in-not
+
 newsig Xminlim bit
 newsig Xmaxlim  bit
 newsig Xhome bit
@@ -13,6 +19,11 @@ linksp Xmaxlim <= ppmc.0.din.02.in-not
 linksp Xmaxlim => axis.0.pos-lim-sw-in
 linksp Xminlim axis.0.home-sw-in
 
+#newsig Yminlim bit
+#newsig Ymaxlim bit
+#newsig Yhome bit
+#net Yminlim axis.1.neg-lim-sw-in ppmc.0.din.04.in-not
+#net Ymaxlim axis.1.pos-lim-sw-in ppmc.0.din.05.in-not
 
 newsig Yminlim bit
 newsig Ymaxlim  bit
@@ -23,6 +34,12 @@ linksp Ymaxlim <= ppmc.0.din.05.in-not
 linksp Ymaxlim => axis.1.pos-lim-sw-in
 linksp Yminlim axis.1.home-sw-in
 
+#newsig Zminlim bit
+#newsig Zmaxlim bit
+#newsig Zhome bit
+#net Zminlim axis.2.neg-lim-sw-in ppmc.0.din.07.in-not
+#net Zmaxlim axis.2.pos-lim-sw-in ppmc.0.din.08.in-not
+
 newsig Zminlim bit
 newsig Zmaxlim  bit
 newsig Zhome bit
@@ -31,6 +48,12 @@ linksp Zminlim => axis.2.neg-lim-sw-in
 linksp Zmaxlim <= ppmc.0.din.08.in-not
 linksp Zmaxlim => axis.2.pos-lim-sw-in
 linksp Zminlim axis.2.home-sw-in
+
+#newsig Aminlim bit
+#newsig Amaxlim bit
+#newsig Ahome bit
+#net Aminlim axis.3.neg-lim-sw-in ppmc.0.din.10.in-not
+#net Amaxlim axis.3.pos-lim-sw-in ppmc.0.din.11.in-not
 
 newsig Aminlim bit                    
 newsig Amaxlim  bit
@@ -43,17 +66,17 @@ linksp Xminlim axis.3.home-sw-in
 
 # Servo Alarms  X DI0, Y DI3, Z DI6, A DI9
 
-net amp-fault-x bit
-amp-fault-x axis.00.amp-fault-in ppmc.0.din.01.in
+newsig amp-fault-x bit
+net amp-fault-x axis.00.amp-fault-in ppmc.0.din.01.in
 
-net amp-fault-y bit
-amp-fault-y axis.01.amp-fault-in ppmc.0.din.02.in
+newsig amp-fault-y bit
+net amp-fault-y axis.01.amp-fault-in ppmc.0.din.02.in
 
-net amp-fault-z bit
-amp-fault-z axis.02.amp-fault-in ppmc.0.din.03.in
+newsig amp-fault-z bit
+net amp-fault-z axis.02.amp-fault-in ppmc.0.din.03.in
 
-net amp-fault-a bit
-amp-fault-a axis.03.amp-fault-in ppmc.0.din.04.in
+newsig amp-fault-a bit
+net amp-fault-a axis.03.amp-fault-in ppmc.0.din.04.in
 
 
 # connect index pulses to motion controller
@@ -104,16 +127,16 @@ linksp emc-estop-reset estop-latch.0.reset
 #estop may need to be inverted
 
 # Servo Amp Enable      SSR1 
-net Amp-enable-x bit
-Amp-enable-x axis.00.amp-enable-out ppmc.0.dout.01.out
+newsig Amp-enable-x bit
+net Amp-enable-x axis.00.amp-enable-out ppmc.0.dout.01.out
 
 # Servo Amp Enable      SSR2 temp till current amp gets built
-net Amp-enable-y bit
-Amp-enable-y axis.01.amp-enable-out ppmc.0.dout.02.out
+newsig Amp-enable-y bit
+net Amp-enable-y axis.01.amp-enable-out ppmc.0.dout.02.out
 
 # Servo Amp Enable      SSR3  temp till current amp gets built
-net Amp-enable-z bit
-Amp-enable-z axis.02.amp-enable-out ppmc.0.dout.03.out
+newsig Amp-enable-z bit
+net Amp-enable-z axis.02.amp-enable-out ppmc.0.dout.03.out
 
 
 # connect spindle fwd/rev to I/O controller Spindle Forward Run 1 SSR 8
