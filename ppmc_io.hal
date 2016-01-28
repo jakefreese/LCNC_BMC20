@@ -1,7 +1,7 @@
 # HAL config file for Pico Systems USC board
 #
 # Connect motion controller I/Os
-# HURCO BMC30 JAKE FREESE 01/27/2016
+# HURCO BMC30 JAKE FREESE 01/19/2016
 
 # connect limit/home switch outputs to motion controller
 #newsig Xminlim bit
@@ -70,13 +70,9 @@ linksp Xminlim axis.3.home-sw-in
 
 
 # Servo Alarms  X DI0, Y DI3, Z DI6, A DI9
-
 net amp-fault-x axis.0.amp-fault-in ppmc.0.din.01.in
-
 net amp-fault-y axis.1.amp-fault-in ppmc.0.din.02.in
-
 net amp-fault-z axis.2.amp-fault-in ppmc.0.din.03.in
-
 net amp-fault-a axis.3.amp-fault-in ppmc.0.din.04.in
 
 
@@ -127,13 +123,9 @@ linksp emc-estop-reset estop-latch.0.reset
 #linksp EstopWrite => iocontrol.0.user-enable-out
 #estop may need to be inverted
 
-
-# Servo Amp Enable      SSR1 
-
-# Servo Amp Enable      SSR2 temp till current amp gets built
-
-# Servo Amp Enable      SSR3  temp till current amp gets built
-
+# Xenable     SSR1 
+# Yenable     SSR2 temp till current amp gets built
+# Zenable     SSR3  temp till current amp gets built
 net Xenable <= axis.0.amp-enable-out ppmc.0.dout.01.out
 net Yenable <= axis.1.amp-enable-out ppmc.0.dout.02.out
 net Zenable <= axis.2.amp-enable-out ppmc.0.dout.03.out
@@ -190,24 +182,21 @@ net Zenable <= axis.2.amp-enable-out ppmc.0.dout.03.out
 #linksp SpindleBrakeOn => motion.spindle-brake     
 
 # connect mist/flood coolant to I/O controller  SSR 16 
-#newsig MistOn bit
-#newsig FloodOn bit
-#linksp MistOn <= ppmc.0.dout.03.out             #No Mist at the moment 
-#linksp MistOn => iocontrol.0.coolant-mist
-#linksp FloodOn <= ppmc.0.dout.16.out           
-#linksp FloodOn => iocontrol.0.coolant-flood
+#net coolant-mist iocontrol.0 ppmc.0.dout.04.out
+net coolant-flood iocontrol.0.coolant-flood ppmc.0.dout.15.out
+
 
 # Way Lube Pump       SSR 3
 # Way Lube Level      DI 27
-# linksp lube <= ppmc.0.dout.03.out
-# linksp lube => iocontrol.0.lube
-# linksp lube_level <= ppmc.0.din.27.in
-# linksp lube_level => iocontrol.0.lube_level
+net lube iocontrol.0.lube ppmc.0.dout.04.out
+net lube_level iocontrol.0.lube_level ppmc.0.din.27.in
+
 
 
 # Air Pressure Switch DI 28 
-# linksp        <= ppmc.0.din.28.in
-# linksp        => iocontrol.0.
+#newsig air-alarm bit
+#net air-alarm iocontrol.0.air-alarm ppmc.0.din.28.in
+
 
 # X Torque            DI 16
 # linksp        <= ppmc.0.din.16.in
