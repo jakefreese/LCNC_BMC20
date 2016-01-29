@@ -194,8 +194,8 @@ net lube_level iocontrol.0.lube_level ppmc.0.din.27.in
 
 
 # Air Pressure Switch DI 28 
-#newsig air-alarm bit
-#net air-alarm iocontrol.0.air-alarm ppmc.0.din.28.in
+newsig air-alarm bit
+net air-alarm motion.enable ppmc.0.din.28.in-not
 
 
 # X Torque            DI 16
@@ -267,7 +267,12 @@ net lube_level iocontrol.0.lube_level ppmc.0.din.27.in
 # linksp        <= ppmc.0.dout.09.out
 # linksp        => iocontrol.0.
 
+# Tool Caroseul rotate button DI29
+# new sig Rotate-tool
+# net Rotate-tool .0. ppmc.0.din.29.in
 
 # Cabinet Coolers     SSR 15
 # linksp        <= ppmc.0.dout.15.out
 # linksp        => iocontrol.0.
+
+
