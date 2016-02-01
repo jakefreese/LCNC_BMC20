@@ -80,9 +80,10 @@ newsig emc-estop-reset bit
 linksp emc-estop-reset iocontrol.0.user-request-enable
 linksp emc-estop-reset estop-latch.0.reset
 
-loadrt message names=ppmcEstop messages="EMERGENCY STOP"
-addf ppmcEstop iocontrol
-setp ppmcEstop.edge 0 #this pin should be active low
+#loadrt message names=ppmcEstop messages="EMERGENCY STOP"
+#addf ppmcEstop iocontrol
+#setp ppmcEstop.edge 0 #this pin should be active low
+#net ppmcEstop ppmc.0.din.estop.trigger
 
 #newsig EstopSense bit
 #newsig EstopWrite bit
@@ -128,13 +129,15 @@ net Zenable <= axis.2.amp-enable-out ppmc.0.dout.03.out
 #newsig Orient-COMP bit
 #net Orient-COMP motion.enable ppmc.0.din.14.in
 
+
 # Spindle E STOP             SSR 7
 #newsig spindle-Estop bit
 #net spindle-Estop motion.enable ppmc.0.dout.07.out
 
+
 # Spindle Alarm              DI 15
 #newsig spindle-alarm bit
-#net spindle-alarm motion.enable ppmc.0.din.15.in
+#net spindle-alarm motion.spindle-inhibit ppmc.0.din.15.in
 
 
 # connect spindle speed up/down to I/O controller  Speed command on DAC CARD
@@ -159,19 +162,19 @@ net coolant-flood iocontrol.0.coolant-flood ppmc.0.dout.15.out
 # Way Lube Level      DI 27
 net lube iocontrol.0.lube ppmc.0.dout.04.out
 net lube_level iocontrol.0.lube_level ppmc.0.din.27.in
-loadrt message names=lube_level messages="LOW LUBE"
-addf lube_level iocontrol
-setp lube_level.edge 0 #this pin should be active low
-
+#loadrt message names=lube_level messages="LOW LUBE"
+#addf lube_level iocontrol
+#setp lube_level.edge 0 #this pin should be active low
+#net lube_level iocontrol.0.lube_level ppmc.0.din.27.trigger
 
 
 # Air Pressure Switch DI 28 
 newsig air-alarm bit
 net air-alarm motion.enable ppmc.0.din.28.in-not
-loadrt message names=air-alarm messages="LOW AIR PRESSURE"
-addf air-alarm iocontrol
-setp air-alarm.edge 0 #this pin should be active low
-
+#loadrt message names=air-alarm messages="LOW AIR PRESSURE"
+#addf air-alarm iocontrol
+#setp air-alarm.edge 0 #this pin should be active low
+#net air-alarm motion.enable ppmc.0.din.28.trigger
 
 # X Torque            DI 16
 #newsig X-Torque bit
