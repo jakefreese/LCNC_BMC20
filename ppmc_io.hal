@@ -172,8 +172,8 @@ net lube_level iocontrol.0.lube_level ppmc.0.din.27.in
 newsig air-alarm bit
 net air-alarm motion.enable ppmc.0.din.28.in-not
 #loadrt message names=air-alarm messages="LOW AIR PRESSURE"
-#addf air-alarm iocontrol
-#setp air-alarm.edge 0 #this pin should be active low
+#addf motion.enable iocontrol
+#setp motion.enable.edge 0 #this pin should be active low
 #net air-alarm motion.enable ppmc.0.din.28.trigger
 
 # X Torque            DI 16
