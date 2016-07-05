@@ -100,7 +100,14 @@ net Xenable <= axis.0.amp-enable-out ppmc.0.dout.01.out
 net Yenable <= axis.1.amp-enable-out ppmc.0.dout.02.out
 net Zenable <= axis.2.amp-enable-out ppmc.0.dout.03.out
 
-
+# Way Lube Pump       SSR 3    <<<<<------MOVE TO COME ON WITH SERVO ENABLE
+# Way Lube Level      DI 27
+net lube iocontrol.0.lube ppmc.0.dout.04.out
+net lube_level iocontrol.0.lube_level ppmc.0.din.27.in
+#loadrt message names=lube_level messages="LOW LUBE"
+#addf lube_level iocontrol
+#setp lube_level.edge 0 #this pin should be active low
+#net lube_level iocontrol.0.lube_level ppmc.0.din.27.trigger
 
 # connect spindle fwd/rev to I/O controller Spindle Forward Run 1 SSR 8
 # newsig SpindleFwd bit
@@ -110,10 +117,6 @@ net Zenable <= axis.2.amp-enable-out ppmc.0.dout.03.out
 # linksp SpindleRev <= ppmc.0.dout.01.out      #no reverse run at the moment
 # linksp SpindleRev => motion.spindle-reverse
 
-# Spindle Cooler             SSR 2
-#newsig spindle-cooler bit
-#net spindle-cooler motion.enable ppmc.0.dout.02.out
-
 # Servo Alarm Reset          SSR 4
 #newsig servo-alarm-reset bit
 #net servo-alarm-reset motion.enable ppmc.0.dout.04.out
@@ -122,23 +125,9 @@ net Zenable <= axis.2.amp-enable-out ppmc.0.dout.03.out
 #newsig low-speed bit
 #net low-speed motion.enable ppmc.0.dout.05.out
 
-# Orient Command             SSR 6
-# Orient Complete            DI 14  
-#newsig Orient-CMD bit
-#net Orient-CMD motion.enable ppmc.0.dout.06.out
-#newsig Orient-COMP bit
-#net Orient-COMP motion.enable ppmc.0.din.14.in
-
-
-# Spindle E STOP             SSR 7
-#newsig spindle-Estop bit
-#net spindle-Estop motion.enable ppmc.0.dout.07.out
-
-
 # Spindle Alarm              DI 15
 #newsig spindle-alarm bit
 #net spindle-alarm motion.spindle-inhibit ppmc.0.din.15.in
-
 
 # connect spindle speed up/down to I/O controller  Speed command on DAC CARD
 #newsig SpindleUp bit
@@ -148,25 +137,9 @@ net Zenable <= axis.2.amp-enable-out ppmc.0.dout.03.out
 #linksp SpindleDown <= ppmc.0.dout.05.out
 #linksp SpindleDown => motion.spindle-decr-speed
 
-# connect spindle brake to I/O controller       #no spindle brake 
-#newsig SpindleBrakeOn bit
-#linksp SpindleBrakeOn <= ppmc.0.dout.02.out
-#linksp SpindleBrakeOn => motion.spindle-brake     
-
 # connect mist/flood coolant to I/O controller  SSR 16 
 #net coolant-mist iocontrol.0 ppmc.0.dout.04.out
 net coolant-flood iocontrol.0.coolant-flood ppmc.0.dout.15.out
-
-
-# Way Lube Pump       SSR 3
-# Way Lube Level      DI 27
-net lube iocontrol.0.lube ppmc.0.dout.04.out
-net lube_level iocontrol.0.lube_level ppmc.0.din.27.in
-#loadrt message names=lube_level messages="LOW LUBE"
-#addf lube_level iocontrol
-#setp lube_level.edge 0 #this pin should be active low
-#net lube_level iocontrol.0.lube_level ppmc.0.din.27.trigger
-
 
 # Air Pressure Switch DI 28 
 newsig air-alarm bit
@@ -175,6 +148,8 @@ net air-alarm motion.enable ppmc.0.din.28.in-not
 #addf motion.enable iocontrol
 #setp motion.enable.edge 0 #this pin should be active low
 #net air-alarm motion.enable ppmc.0.din.28.trigger
+
+# TORQUE METER INPUTS
 
 # X Torque            DI 16
 #newsig X-Torque bit
@@ -191,6 +166,15 @@ net air-alarm motion.enable ppmc.0.din.28.in-not
 # S Torque            DI 19
 #newsig S-Torque bit
 #net S-Torque motion.enable ppmc.0.din.19.in
+
+# TOOL CHANGER COMPONENTS
+
+# Orient Command             SSR 6
+# Orient Complete            DI 14  
+#newsig Orient-CMD bit
+#net Orient-CMD motion.enable ppmc.0.dout.06.out
+#newsig Orient-COMP bit
+#net Orient-COMP motion.enable ppmc.0.din.14.in
 
 # TOOL CHANGER
 # Mag POS             DI 20
@@ -251,9 +235,7 @@ net air-alarm motion.enable ppmc.0.din.28.in-not
 #newsig rotate-tool
 #net rotate-tool .0. ppmc.0.din.29.in
 
-# Cabinet Coolers     SSR 15
-#newsig cabinet-coolers bit
-#net cabinet-coolers motion.enable ppmc.0.dout.15.out
+
 
 #
 #
