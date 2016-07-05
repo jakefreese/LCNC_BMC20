@@ -1,0 +1,10 @@
+# Classic Ladder for HURCO BMC30 Tool Changer
+# 24 Pocket rotary carosuel tool changer
+# Spindle must orient
+# Head move to limit switch
+# Move in, unlock, down, out, select tool, in, up, lock, out
+# Solenoids 
+# LEFT DO12, RIGHT DO11, UP DO14, DOWN DO13, SPINDLE ORIENT DO06, TOOL UNCLAMP DO10, MAGROT DO09
+# LIMIT SWITCHES
+# LEFT DI22, RIGHT DI21, UP DI24, DOWN DI23, SPINDLE ORIENT COMPLETE DI14, TOOL UNCLAMP DI26, SPINDLE+ DI11, SPINDLE- DI12, MAG ROT BUT DI29
+#
