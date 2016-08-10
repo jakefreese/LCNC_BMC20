@@ -8,3 +8,26 @@
 # LIMIT SWITCHES
 # LEFT DI22, RIGHT DI21, UP DI24, DOWN DI23, SPINDLE ORIENT COMPLETE DI14, TOOL UNCLAMP DI26, SPINDLE+ DI11, SPINDLE- DI12, MAG ROT BUT DI29
 #
+#
+#------||------()------
+#   Orient   MAG RIGHT
+#-----||-------()------
+#   MAG RIGHT  UNLOCK
+#----||--------()------
+#   UNLOCKED   DOWN
+#----||----||----()-----
+#   DOWN  MIP    ROTATE
+#---()----------------
+#  UP
+#---||-------()------
+#   UP       RELEASE UNLOCK
+#---()---------------
+# LEFT 
+#----||--------------
+# LEFT
+#----||-------------
+# MAG HOME
+#
+#
+
+     
