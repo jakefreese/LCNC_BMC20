@@ -1,14 +1,10 @@
 # Classic Ladder for HURCO BMC30 Tool Changer
 # 24 Pocket rotary carosuel tool changer
-# Spindle must orient
-# Head move to limit switch
-# Move in, unlock, down, out, select tool, in, up, lock, out
-# Solenoids 
-# LEFT DO12, RIGHT DO11, UP DO14, DOWN DO13, SPINDLE ORIENT DO06, TOOL UNCLAMP DO10, MAGROT DO09
-# LIMIT SWITCHES
-# LEFT DI22, RIGHT DI21, UP DI24, DOWN DI23, SPINDLE ORIENT COMPLETE DI14, TOOL UNCLAMP DI26, SPINDLE+ DI11, SPINDLE- DI12, MAG ROT BUT DI29
 #
 #
+#
+# Move to Z+ HOME SWITCH
+#net Zmaxlim axis.2.pos-lim-sw-in ppmc.0.din.05.in-not
 #------||------()------
 #   Orient   MAG RIGHT
 #-----||-------()------
@@ -29,5 +25,70 @@
 # MAG HOME
 #
 #
+
+CLASSIC LADDER FOR TOOL CHANGER
+
+#Head to move to the upper limit
+#Call for spindle orient
+#check spindle is oriented 
+#Move carosuel in
+#Release tool
+#lower carosuel
+#rotate to desired tool
+#raise caosuel
+#Lock tool
+#retract carosuel
+#insure carosuel is home
+#return to work
+
+
+MANUAL TOOL CHANGE
+
+#read button for tool change, (ignore if spindle moving)
+#release tool (air solenoid)
+#lock tool on button release
+
+
+
+# Move to Z+ HOME SWITCH
+# net Zmaxlim axis.2.pos-lim-sw-in ppmc.0.din.05.in-not
+# spindle orient
+# net spindleorient classicladder.0.dout.06.out
+# spindle oriented
+# net classicladder.0.din.14.in
+# spindle orient mag switches
+# net classicladder.0.din.21.in
+# net classicladder.0.din.21.in
+# net classicladder.0.din.21.in
+# Carosuel right
+# net classicladder.0.din.21.in
+# net classicladder.0.dout.11.out
+# Carosuel left
+# net classicladder.0.din.22.in
+# net classicladder.0.dout.12.out
+# Carosuel down
+# net classicladder.0.din.23.in
+# net classicladder.0.dout.13.out
+# Carosuel up
+# net classicladder.0.din.24.in
+# net classicladder.0.dout.24.out
+# Spindle unclamp button
+# net classicladder.0.dout.10.in
+# Spindle Unclamp
+# net classicladder.0.din.26.out
+# Spindle Limit clamped 
+# net classicladder.0.din.11.in
+# Spindle Limit unclamped
+# net classicladder.0.din.12.in
+# Carosuel rotate button
+# net classicladder.0.din.29.in
+# Carosuel rotate 
+# net classicladder.0.dout.9.out
+# Carosuel HOME
+# net classicladder.0.din.20.in
+# Mag Reference
+# net classicladdder.0.din.25.in 
+
+
 
      
