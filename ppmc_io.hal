@@ -1,7 +1,7 @@
 # HAL config file for Pico Systems USC board
 #
 # Connect motion controller I/Os
-# HURCO BMC30 JAKE FREESE 01/19/2016
+# HURCO BMC30 JAKE FREESE 11/11/2016
 
 loadrt message names=EstopWrite,motion.enable messages="EMERGENCY STOP,LOW AIR PRESSURE"
 addf EstopWrite servo-thread
@@ -19,15 +19,15 @@ net Xmaxlim axis.0.home-sw-in
 newsig Yminlim bit
 newsig Ymaxlim bit
 newsig Yhome bit
-net Ymaxlim axis.1.pos-lim-sw-in ppmc.0.din.03.in-not
-net Yminlim axis.1.neg-lim-sw-in ppmc.0.din.04.in-not
+net Ymaxlim axis.1.pos-lim-sw-in ppmc.0.din.04.in-not
+net Yminlim axis.1.neg-lim-sw-in ppmc.0.din.05.in-not
 net Ymaxlim axis.1.home-sw-in
 
 newsig Zminlim bit
 newsig Zmaxlim bit
 newsig Zhome bit
-net Zmaxlim axis.2.pos-lim-sw-in ppmc.0.din.05.in-not
-net Zminlim axis.2.neg-lim-sw-in ppmc.0.din.06.in-not
+net Zmaxlim axis.2.pos-lim-sw-in ppmc.0.din.08.in-not
+net Zminlim axis.2.neg-lim-sw-in ppmc.0.din.07.in-not
 net Zmaxlim axis.2.home-sw-in
 
 #newsig Aminlim bit
@@ -38,10 +38,8 @@ net Zmaxlim axis.2.home-sw-in
 #net Xminlim axis.3.home-sw-in
 
 
-# Servo Alarm  DI0
+# Servo Alarms  ALL ALARMS DI0
 net amp-fault-x axis.0.amp-fault-in ppmc.0.din.00.in
-
-
 
 # connect index pulses to motion controller
 # do these when index pulsing is figured out
@@ -90,8 +88,9 @@ net emc-estop-reset estop-latch.0.reset
 #linksp EstopWrite => iocontrol.0.user-enable-out
 #estop may need to be inverted
 
-# Xenable     SSR1 gets all three, lube, servo contactor
-net Xenable <= axis.0.amp-enable-out ppmc.0.dout.00.out
+# Servo enable     SSR8 
+
+net Xenable <= axis.0.amp-enable-out ppmc.0.dout.08.out
 
 
 
@@ -121,7 +120,11 @@ net Xenable <= axis.0.amp-enable-out ppmc.0.dout.00.out
 # linksp        <= ppmc.0.dout.06.out
 # linksp        => iocontrol.0.
 # linksp        <= ppmc.0.din.14.in
-# linksp        => iocontrol.0.in
+# linksp        => iocontrol.0.
+
+# Spindle E STOP             SSR 7
+# linksp        <= ppmc.0.dout.07.out
+# linksp        => iocontrol.0.
 
 # Spindle Alarm              DI 15
 # linksp        <= ppmc.0.din.15.in
@@ -136,11 +139,19 @@ net Xenable <= axis.0.amp-enable-out ppmc.0.dout.00.out
 #linksp SpindleDown <= ppmc.0.dout.05.out
 #linksp SpindleDown => motion.spindle-decr-speed
 
+# connect spindle brake to I/O controller       #no spindle brake 
+#newsig SpindleBrakeOn bit
+#linksp SpindleBrakeOn <= ppmc.0.dout.02.out
+#linksp SpindleBrakeOn => motion.spindle-brake     
+
 # connect mist/flood coolant to I/O controller  SSR 16 
 #net coolant-mist iocontrol.0 ppmc.0.dout.04.out
 net coolant-flood iocontrol.0.coolant-flood ppmc.0.dout.15.out
 
+
+# Way Lube Pump combined with servo on
 # Way Lube Level      DI 27
+
 net lube_level iocontrol.0.lube_level ppmc.0.din.27.in
 #loadrt message names=lube_level messages="LOW LUBE"
 #addf lube_level iocontrol
@@ -149,7 +160,7 @@ net lube_level iocontrol.0.lube_level ppmc.0.din.27.in
 
 
 # Air Pressure Switch DI 28 
-#net air-alarm motion.enable ppmc.0.din.28.in-not
+net air-alarm motion.enable ppmc.0.din.28.in-not
 #loadrt message names=airpressure="Low Air Pressure"
 #addf airpressure servo-thread
 #net air-alarm motion.enable ppmc.0.din.28.in-not
@@ -229,6 +240,9 @@ net lube_level iocontrol.0.lube_level ppmc.0.din.27.in
 # new sig Rotate-tool
 # net Rotate-tool .0. ppmc.0.din.29.in
 
+# Cabinet Coolers     SSR 15
+# linksp        <= ppmc.0.dout.15.out
+# linksp        => iocontrol.0.
 
 #
 #
