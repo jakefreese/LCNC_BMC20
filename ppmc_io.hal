@@ -3,10 +3,10 @@
 # Connect motion controller I/Os
 # HURCO BMC30 JAKE FREESE 11/11/2016
 
-loadrt message names=EstopWrite,motion.enable messages="EMERGENCY STOP,LOW AIR PRESSURE"
+loadrt message names=EstopWrite,motion.enable,air-alarm messages="EMERGENCY STOP,MOTION-DISABLE,LOW AIR PRESSURE"
 addf EstopWrite servo-thread
 addf motion.enable servo-thread
-
+addf air-alarm servo-thread
 
 # connect limit/home switch outputs to motion controller
 newsig Xminlim bit
@@ -19,15 +19,15 @@ net Xmaxlim axis.0.home-sw-in
 newsig Yminlim bit
 newsig Ymaxlim bit
 newsig Yhome bit
-net Ymaxlim axis.1.pos-lim-sw-in ppmc.0.din.04.in-not
-net Yminlim axis.1.neg-lim-sw-in ppmc.0.din.05.in-not
+net Ymaxlim axis.1.pos-lim-sw-in ppmc.0.din.03.in-not
+net Yminlim axis.1.neg-lim-sw-in ppmc.0.din.04.in-not
 net Ymaxlim axis.1.home-sw-in
 
 newsig Zminlim bit
 newsig Zmaxlim bit
 newsig Zhome bit
-net Zmaxlim axis.2.pos-lim-sw-in ppmc.0.din.08.in-not
-net Zminlim axis.2.neg-lim-sw-in ppmc.0.din.07.in-not
+net Zmaxlim axis.2.pos-lim-sw-in ppmc.0.din.06.in-not
+net Zminlim axis.2.neg-lim-sw-in ppmc.0.din.05.in-not
 net Zmaxlim axis.2.home-sw-in
 
 #newsig Aminlim bit
@@ -88,9 +88,9 @@ net emc-estop-reset estop-latch.0.reset
 #linksp EstopWrite => iocontrol.0.user-enable-out
 #estop may need to be inverted
 
-# Servo enable     SSR8 
+# Servo enable     SSR7
 
-net Xenable <= axis.0.amp-enable-out ppmc.0.dout.08.out
+net Xenable <= axis.0.amp-enable-out ppmc.0.dout.06.out
 
 
 
@@ -161,10 +161,6 @@ net lube_level iocontrol.0.lube_level ppmc.0.din.27.in
 
 # Air Pressure Switch DI 28 
 net air-alarm motion.enable ppmc.0.din.28.in-not
-#loadrt message names=airpressure="Low Air Pressure"
-#addf airpressure servo-thread
-#net air-alarm motion.enable ppmc.0.din.28.in-not
-#net air-alarm airpressure.trigger
 
 
 # X Torque            DI 16
@@ -240,9 +236,6 @@ net air-alarm motion.enable ppmc.0.din.28.in-not
 # new sig Rotate-tool
 # net Rotate-tool .0. ppmc.0.din.29.in
 
-# Cabinet Coolers     SSR 15
-# linksp        <= ppmc.0.dout.15.out
-# linksp        => iocontrol.0.
 
 #
 #
