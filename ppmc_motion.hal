@@ -1,7 +1,7 @@
 # HAL config file for Pico Systems USC board
 #
 # Connect motion controller I/Os
-# HURCO BMC30 JAKE FREESE 01/19/2016
+# HURCO BMC30 JAKE FREESE 11/14/2016
 
 loadrt message names=EstopWrite,motion.enable messages="EMERGENCY STOP,LOW AIR PRESSURE"
 addf EstopWrite servo-thread
@@ -15,6 +15,7 @@ newsig Xhome bit
 net Xminlim axis.0.neg-lim-sw-in ppmc.0.din.01.in-not
 net Xmaxlim axis.0.pos-lim-sw-in ppmc.0.din.02.in-not
 net Xminlim axis.0.home-sw-in
+#net Xhome axis.0.homing ppmc.0.dout.XX.out
 
 newsig Yminlim bit
 newsig Ymaxlim bit
@@ -22,6 +23,7 @@ newsig Yhome bit
 net Yminlim axis.1.neg-lim-sw-in ppmc.0.din.04.in-not
 net Ymaxlim axis.1.pos-lim-sw-in ppmc.0.din.05.in-not
 net Yminlim axis.1.home-sw-in
+#net Yhome axis.1.homing ppmc.0.dout.XX.out
 
 newsig Zminlim bit
 newsig Zmaxlim bit
@@ -29,6 +31,7 @@ newsig Zhome bit
 net Zminlim axis.2.neg-lim-sw-in ppmc.0.din.07.in-not
 net Zmaxlim axis.2.pos-lim-sw-in ppmc.0.din.08.in-not
 net Zminlim axis.2.home-sw-in
+#net Xhome axis.2.homing ppmc.0.dout.XX.out
 
 #newsig Aminlim bit
 #newsig Amaxlim bit
