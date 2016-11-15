@@ -15,6 +15,7 @@ newsig Xhome bit
 net Xmaxlim axis.0.pos-lim-sw-in ppmc.0.din.01.in-not
 net Xminlim axis.0.neg-lim-sw-in ppmc.0.din.02.in-not
 net Xmaxlim axis.0.home-sw-in
+net Xhome axis.0.homing ppmc.0.dout.00.out
 
 newsig Yminlim bit
 newsig Ymaxlim bit
@@ -22,6 +23,7 @@ newsig Yhome bit
 net Ymaxlim axis.1.pos-lim-sw-in ppmc.0.din.03.in-not
 net Yminlim axis.1.neg-lim-sw-in ppmc.0.din.04.in-not
 net Ymaxlim axis.1.home-sw-in
+net Yhome axis.1.homing ppmc.0.dout.00.out
 
 newsig Zminlim bit
 newsig Zmaxlim bit
@@ -29,6 +31,7 @@ newsig Zhome bit
 net Zmaxlim axis.2.pos-lim-sw-in ppmc.0.din.06.in-not
 net Zminlim axis.2.neg-lim-sw-in ppmc.0.din.05.in-not
 net Zmaxlim axis.2.home-sw-in
+net Zhome axis.2.homing ppmc.0.dout.00.out
 
 #newsig Aminlim bit
 #newsig Amaxlim bit
@@ -40,6 +43,8 @@ net Zmaxlim axis.2.home-sw-in
 
 # Servo Alarms  ALL ALARMS DI0
 net amp-fault-x axis.0.amp-fault-in ppmc.0.din.00.in
+net amp-fault-y axis.1.amp-fault-in ppmc.0.din.00.in
+net amp-fault-z axis.2.amp-fault-in ppmc.0.din.00.in
 
 # connect index pulses to motion controller
 # do these when index pulsing is figured out
@@ -90,18 +95,20 @@ net emc-estop-reset estop-latch.0.reset
 
 # Servo enable     SSR7
 net Xenable <= axis.0.amp-enable-out ppmc.0.dout.06.out
+net Yenable <= axis.1.amp-enable-out ppmc.0.dout.06.out
+net Zenable <= axis.2.amp-enable-out ppmc.0.dout.06.out
 
 # connect spindle fwd/rev to I/O controller Spindle Forward Run 1 SSR 8
 # newsig SpindleOn bit
 # net SpindleOn motion.spindle-on ppmc.0.dout.08.out
 
 # Servo Alarm Reset          SSR 4
-#net "" motion."" ppmc.0.dout.04.out
+#net "" motion."" ppmc.0.dout.03.out
 
 # Low Speed Winding Select   SSR 5
-#net "" motion."" ppmc.0.dout.05.out
+#net "" motion."" ppmc.0.dout.04.out
 # Orient Command             SSR 6
-#net spindle.orient motion.spindle-orient ppmc.0.dout.06.out
+#net spindle.orient motion.spindle-orient ppmc.0.dout.05.out
 # Orient Complete            DI 14  
 #net spindle-is-oriented motion.spindle-is-oriented ppmc.0.din.14.in
 # Spindle Alarm              DI 15
@@ -115,8 +122,8 @@ net Xenable <= axis.0.amp-enable-out ppmc.0.dout.06.out
 #linksp SpindleDown <= ppmc.0.dout.05.out
 #linksp SpindleDown => motion.spindle-decr-speed
 
-# connect mist/flood coolant to I/O controller  SSR 16 
-#net coolant-mist iocontrol.0.coolant-mist ppmc.0.dout.14.out
+# connect mist/flood coolant to I/O controller  SSR 15 and 16 
+net coolant-mist iocontrol.0.coolant-mist ppmc.0.dout.14.out
 net coolant-flood iocontrol.0.coolant-flood ppmc.0.dout.15.out
 
 
