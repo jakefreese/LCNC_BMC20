@@ -15,7 +15,7 @@ newsig Xhome bit
 net Xminlim axis.0.neg-lim-sw-in ppmc.0.din.01.in-not
 net Xmaxlim axis.0.pos-lim-sw-in ppmc.0.din.02.in-not
 net Xminlim axis.0.home-sw-in
-#net Xhome axis.0.homing ppmc.0.dout.XX.out
+#net Xhome axis.0.homing ppmc.0.dout.00.out
 
 newsig Yminlim bit
 newsig Ymaxlim bit
@@ -23,7 +23,7 @@ newsig Yhome bit
 net Yminlim axis.1.neg-lim-sw-in ppmc.0.din.04.in-not
 net Ymaxlim axis.1.pos-lim-sw-in ppmc.0.din.05.in-not
 net Yminlim axis.1.home-sw-in
-#net Yhome axis.1.homing ppmc.0.dout.XX.out
+#net Yhome axis.1.homing ppmc.0.dout.00.out
 
 newsig Zminlim bit
 newsig Zmaxlim bit
@@ -31,7 +31,7 @@ newsig Zhome bit
 net Zminlim axis.2.neg-lim-sw-in ppmc.0.din.07.in-not
 net Zmaxlim axis.2.pos-lim-sw-in ppmc.0.din.08.in-not
 net Zminlim axis.2.home-sw-in
-#net Xhome axis.2.homing ppmc.0.dout.XX.out
+#net Xhome axis.2.homing ppmc.0.dout.00.out
 
 #newsig Aminlim bit
 #newsig Amaxlim bit
@@ -41,10 +41,10 @@ net Zminlim axis.2.home-sw-in
 #net Xminlim axis.3.home-sw-in
 
 
-# Servo Alarms  X DI0, Y DI3, Z DI6, A DI9
+# Servo Alarms  X,Y,Z DI0
 net amp-fault-x axis.0.amp-fault-in ppmc.0.din.00.in
-net amp-fault-y axis.1.amp-fault-in ppmc.0.din.03.in
-net amp-fault-z axis.2.amp-fault-in ppmc.0.din.06.in
+net amp-fault-y axis.1.amp-fault-in ppmc.0.din.00.in
+net amp-fault-z axis.2.amp-fault-in ppmc.0.din.00.in
 #net amp-fault-a axis.3.amp-fault-in ppmc.0.din.04.in
 
 
@@ -101,12 +101,12 @@ linksp emc-estop-reset estop-latch.0.reset
 #linksp EstopWrite => iocontrol.0.user-enable-out
 #estop may need to be inverted
 
-# Xenable     SSR1 
-# Yenable     SSR2 temp till current amp gets built
-# Zenable     SSR3  temp till current amp gets built
-net Xenable <= axis.0.amp-enable-out ppmc.0.dout.01.out
-net Yenable <= axis.1.amp-enable-out ppmc.0.dout.02.out
-net Zenable <= axis.2.amp-enable-out ppmc.0.dout.03.out
+# Xenable     SSR7 
+# Yenable     SSR7 
+# Zenable     SSR7  
+net Xenable <= axis.0.amp-enable-out ppmc.0.dout.06.out
+net Yenable <= axis.1.amp-enable-out ppmc.0.dout.06.out
+net Zenable <= axis.2.amp-enable-out ppmc.0.dout.06.out
 
 
 
@@ -118,9 +118,6 @@ net Zenable <= axis.2.amp-enable-out ppmc.0.dout.03.out
 # linksp SpindleRev <= ppmc.0.dout.01.out      #no reverse run at the moment
 # linksp SpindleRev => motion.spindle-reverse
 
-# Spindle Cooler             SSR 2
-# linksp        <= ppmc.0.dout.02.out
-# linksp        => iocontrol.0.
 
 # Servo Alarm Reset          SSR 4
 # linksp        <= ppmc.0.dout.04.out
