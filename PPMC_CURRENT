@@ -1,39 +1,31 @@
 # HAL config file for Pico Systems USC board
 #
 # Connect motion controller I/Os
-# HURCO BMC30 JAKE FREESE 11/11/2016
+# HURCO BMC30 JAKE FREESE 11/18/2016
 
 loadrt message names=EstopWrite,motion.enable,air-alarm messages="EMERGENCY STOP,MOTION-DISABLE,LOW AIR PRESSURE"
 addf EstopWrite servo-thread
 addf motion.enable servo-thread
 addf air-alarm servo-thread
 
-loadrt or2 count=2
-addf or2.0    servothread
-addf or2.1    servothread
-
-# connect limit/home switch outputs to motion controller
-
-net limitoverrideor2 <= or2.0.out => or2.1.in0 
-
 net Xmaxlim axis.0.pos-lim-sw-in ppmc.0.din.01.in-not
 net Xminlim axis.0.neg-lim-sw-in ppmc.0.din.02.in-not
 net Xmaxlim axis.0.home-sw-in
-net Xhome <= axis.0.homing => or2.0.in0
-
-net limitoverride <= or2.1.out => ppmc.0.dout.00.out
 
 net Ymaxlim axis.1.pos-lim-sw-in ppmc.0.din.03.in-not
 net Yminlim axis.1.neg-lim-sw-in ppmc.0.din.04.in-not
 net Ymaxlim axis.1.home-sw-in
 
-net Yhome <= axis.1.homing => or2.1.in1
-
 net Zmaxlim axis.2.pos-lim-sw-in ppmc.0.din.06.in-not
 net Zminlim axis.2.neg-lim-sw-in ppmc.0.din.05.in-not
 net Zmaxlim axis.2.home-sw-in
 
-net Zhome <= axis.2.homing => or2.1.in1
+loadrt logic personality=0x203
+addf logic.0 servo-thread
+net x-homing axis.0.homing => logic.0.in-00 
+net y-homing axis.1.homing => logic.0.in-01 
+net z-homing axis.2.homing => logic.0.in-02
+net any-homing logic.0.or => ppmc.0.dout.00.out
 
 # Servo Alarms  ALL ALARMS DI0
 net amp-fault-x axis.0.amp-fault-in ppmc.0.din.00.in
