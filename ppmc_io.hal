@@ -8,43 +8,31 @@ addf EstopWrite servo-thread
 addf motion.enable servo-thread
 addf air-alarm servo-thread
 
-# connect limit/home switch outputs to motion controller
-newsig Xminlim bit
-newsig Xmaxlim bit
-newsig Xhome bit
+
 net Xmaxlim axis.0.pos-lim-sw-in ppmc.0.din.01.in-not
 net Xminlim axis.0.neg-lim-sw-in ppmc.0.din.02.in-not
 net Xmaxlim axis.0.home-sw-in
-net Xhome axis.0.homing ppmc.0.dout.00.out
 
-newsig Yminlim bit
-newsig Ymaxlim bit
-newsig Yhome bit
 net Ymaxlim axis.1.pos-lim-sw-in ppmc.0.din.03.in-not
 net Yminlim axis.1.neg-lim-sw-in ppmc.0.din.04.in-not
 net Ymaxlim axis.1.home-sw-in
-net Yhome axis.1.homing ppmc.0.dout.00.out
 
-newsig Zminlim bit
-newsig Zmaxlim bit
-newsig Zhome bit
 net Zmaxlim axis.2.pos-lim-sw-in ppmc.0.din.06.in-not
 net Zminlim axis.2.neg-lim-sw-in ppmc.0.din.05.in-not
 net Zmaxlim axis.2.home-sw-in
-net Zhome axis.2.homing ppmc.0.dout.00.out
 
-#newsig Aminlim bit
-#newsig Amaxlim bit
-#newsig Ahome bit
-#net Aminlim axis.3.neg-lim-sw-in ppmc.0.din.10.in-not
-#net Amaxlim axis.3.pos-lim-sw-in ppmc.0.din.11.in-not
-#net Xminlim axis.3.home-sw-in
-
+loadrt logic personality=0x203
+addf logic.0 servo-thread
+net x-homing axis.0.homing => logic.0.in-00 
+net y-homing axis.1.homing => logic.0.in-01 
+net z-homing axis.2.homing => logic.0.in-02
+net any-homing logic.0.or => ppmc.0.dout.00.out
 
 # Servo Alarms  ALL ALARMS DI0
 net amp-fault-x axis.0.amp-fault-in ppmc.0.din.00.in
-net amp-fault-y axis.1.amp-fault-in ppmc.0.din.00.in
-net amp-fault-z axis.2.amp-fault-in ppmc.0.din.00.in
+
+# Servo enable     SSR7
+net Xenable <= axis.0.amp-enable-out ppmc.0.dout.06.out
 
 # connect index pulses to motion controller
 # do these when index pulsing is figured out
@@ -93,10 +81,6 @@ net emc-estop-reset estop-latch.0.reset
 #linksp EstopWrite => iocontrol.0.user-enable-out
 #estop may need to be inverted
 
-# Servo enable     SSR7
-net Xenable <= axis.0.amp-enable-out ppmc.0.dout.06.out
-net Yenable <= axis.1.amp-enable-out ppmc.0.dout.06.out
-net Zenable <= axis.2.amp-enable-out ppmc.0.dout.06.out
 
 # connect spindle fwd/rev to I/O controller Spindle Forward Run 1 SSR 8
 # newsig SpindleOn bit
@@ -179,14 +163,14 @@ net air-alarm motion.enable ppmc.0.din.28.in-not
 #net "" iocontrol ppmc.0.din.25.in
 
 # Tool Unclamp BUTTON    DI 26
-#net release-button iocontrol ppmc.0.din.26.in
+net release-button iocontrol ppmc.0.din.07.in
 
 # Tool Unclamp        SSR 10
-#net release-tool iocontrol ppmc.0.dout.10.out
+net release-tool iocontrol ppmc.0.dout.09.out
 
 # Spindle Limit +     DI 11
-#net spindle-locked motion.spindle-locked ppmc.0.din.11.in
-#net spindle-inhibit motion.spindle-inhibit ppmc.0.din.11.in-not
+net spindle-locked motion.spindle-locked ppmc.0.din.31.in
+net spindle-inhibit motion.spindle-inhibit ppmc.0.din.31.in-not
 
 # Mag ROTATE          SSR 9
 #net "" iocontrol ppmc.0.dout.10.out
