@@ -29,6 +29,8 @@ net any-homing logic.0.or => ppmc.0.dout.00.out
 
 # Servo Alarms  ALL ALARMS DI0
 net amp-fault-x axis.0.amp-fault-in ppmc.0.din.00.in
+# Servo enable     SSR7
+net Xenable <= axis.0.amp-enable-out ppmc.0.dout.06.out
 
 # connect index pulses to motion controller
 # do these when index pulsing is figured out
@@ -76,13 +78,6 @@ net emc-estop-reset estop-latch.0.reset
 #linksp EstopWrite <= ppmc.0.dout.07.out
 #linksp EstopWrite => iocontrol.0.user-enable-out
 #estop may need to be inverted
-
-# Servo enable     SSR7
-
-net Xenable <= axis.0.amp-enable-out ppmc.0.dout.06.out
-
-
-
 
 # connect spindle fwd/rev to I/O controller Spindle Forward Run 1 SSR 8
 # newsig SpindleFwd bit
@@ -133,13 +128,9 @@ net Xenable <= axis.0.amp-enable-out ppmc.0.dout.06.out
 #linksp SpindleBrakeOn <= ppmc.0.dout.02.out
 #linksp SpindleBrakeOn => motion.spindle-brake     
 
-# connect mist/flood coolant to I/O controller  SSR 16 
-#net coolant-mist iocontrol.0 ppmc.0.dout.04.out
+# connect mist/flood coolant to I/O controller  SSR 15 and 16 
+net coolant-mist iocontrol.0.coolant-mist ppmc.0.dout.14.out
 net coolant-flood iocontrol.0.coolant-flood ppmc.0.dout.15.out
-
-
-# Way Lube Pump combined with servo on
-# Way Lube Level      DI 27
 
 net lube_level iocontrol.0.lube_level ppmc.0.din.27.in
 #loadrt message names=lube_level messages="LOW LUBE"
@@ -147,10 +138,8 @@ net lube_level iocontrol.0.lube_level ppmc.0.din.27.in
 #setp lube_level.edge 0 #this pin should be active low
 #net lube_level iocontrol.0.lube_level ppmc.0.din.27.trigger
 
-
 # Air Pressure Switch DI 28 
 net air-alarm motion.enable ppmc.0.din.28.in-not
-
 
 # X Torque            DI 16
 # linksp        <= ppmc.0.din.16.in
@@ -200,7 +189,6 @@ net air-alarm motion.enable ppmc.0.din.28.in-not
 # Mag REF             DI 25 
 # linksp        <= ppmc.0.din.25.in
 # linksp        => iocontrol.0.
-
 
 # Tool Unclamp BUTTON    DI 26
 net release-button iocontrol ppmc.0.din.07.in
