@@ -190,11 +190,24 @@ net air-alarm motion.enable ppmc.0.din.28.in-not
 # linksp        <= ppmc.0.din.25.in
 # linksp        => iocontrol.0.
 
-# Tool Unclamp BUTTON    DI 26
-net release-button iocontrol ppmc.0.din.07.in
+loadrt and2
+loadrt near
+...
+addf and2.0.servo-thread
+addf near.0 servo-thread
+...
+# PICO hardware
+net spindle-speed encoder.0.velocity => near.0.in1 [b]{and2 here?}[/b]
+setp near.0.in2 0
+setp near.0.difference 2.0
+net spindle-stopped near.0.out => and2.0.in0
 
+# This would be your button
+# Tool Unclamp BUTTON    DI 07
+net release-button  ppmc.0.din.07.in => and2.0.in1 [b]{near 0 here? }[/b]
+# And this is the air valve control
 # Tool Unclamp        SSR 10
-net release-tool iocontrol ppmc.0.dout.09.out
+net release-tool and2.0.out => ppmc.0.dout.09.out
 
 # Spindle Limit +     DI 11
 net spindle-locked motion.spindle-locked ppmc.0.din.31.in
