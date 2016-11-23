@@ -1,7 +1,5 @@
 # HAL config file for Pico Systems USC board
-#
-# Connect motion controller I/Os
-# HURCO BMC30 JAKE FREESE 11/18/2016
+# HURCO BMC30 JAKE FREESE 11/23/2016
 
 loadrt near count=100
 loardrt and2 count=100
@@ -9,7 +7,7 @@ loadrt message names=EstopWrite,motion.enable,air-alarm,lube_level messages="EME
 addf EstopWrite servo-thread
 addf motion.enable servo-thread
 addf air-alarm servo-thread
-addf lube_level iocontrol
+addf lube_level servo-thread
 
 net Xmaxlim axis.0.pos-lim-sw-in ppmc.0.din.01.in-not
 net Xminlim axis.0.neg-lim-sw-in ppmc.0.din.02.in-not
@@ -35,25 +33,10 @@ net amp-fault-x axis.0.amp-fault-in ppmc.0.din.00.in
 # Servo enable     SSR7
 net Xenable <= axis.0.amp-enable-out ppmc.0.dout.06.out
 
-# connect index pulses to motion controller
-# do these when index pulsing is figured out
-newsig Xindex bit
-newsig Yindex  bit
-newsig Zindex bit
-linksp Xindex <= ppmc.0.encoder.00.index-enable
-linksp Xindex => axis.0.index-enable
-linksp Yindex <= ppmc.0.encoder.01.index-enable
-linksp Yindex => axis.1.index-enable
-linksp Zindex <= ppmc.0.encoder.02.index-enable
-linksp Zindex => axis.2.index-enable
+net Xindex <= axis.0.index-enable ppmc.0.encoder.00.index-enable
+net Yindex <= axis.1.index-enable ppmc.0.encoder.01.index-enable
+net Zindex <= axis.2.index-enable ppmc.0.encoder.02.index-enable
 
-#
-# Connect I/O controller I/Os
-#
-
-# connect e-stop write/sense to I/O controller
-# and ppmc's fault with estop's output, so  estop FF is reset, but
-#      prevent continued estop signal from ppmc from holding FF cleared
 net ppmcEstop ppmc.0.din.estop.in
 net ppmcEstop and2.0.in0
 net EstopOkIn estop-latch.0.fault-in
@@ -67,11 +50,6 @@ net emc-estop-out iocontrol.0.user-enable-out
 net emc-estop-out estop-latch.0.ok-in
 net emc-estop-reset iocontrol.0.user-request-enable
 net emc-estop-reset estop-latch.0.reset
-
-#loadrt message names=ppmcEstop messages="OH SHIT"
-#addf ppmcEstop iocontrol
-#setp ppmcEstop.edge 0 #this pin should be active low
-#net ppmcEstop motion.enable ppmc.0.din.estop.trigger
 
 connect spindle fwd/rev to I/O controller Spindle Forward Run 1 SSR 8
 newsig SpindleFwd bit
@@ -92,22 +70,9 @@ net SpindleFwd <= motion.spindle-forward ppmc.0.dout.08.out
 # linksp        <= ppmc.0.din.14.in
 # linksp        => iocontrol.0.
 
-# Spindle E STOP             SSR 7
-# linksp        <= ppmc.0.dout.07.out
-# linksp        => iocontrol.0.
-
 # Spindle Alarm              DI 15
 # linksp        <= ppmc.0.din.15.in
 # linksp        => iocontrol.0.
-
-
-# connect spindle speed up/down to I/O controller  Speed command on DAC CARD
-#newsig SpindleUp bit
-#newsig SpindleDown bit
-#linksp SpindleUp <= ppmc.0.dout.06.out
-#linksp SpindleUp => motion.spindle-incr-speed
-#linksp SpindleDown <= ppmc.0.dout.05.out
-#linksp SpindleDown => motion.spindle-decr-speed
 
 # connect mist/flood coolant to I/O controller  SSR 15 and 16 
 net coolant-mist iocontrol.0.coolant-mist ppmc.0.dout.14.out
@@ -170,19 +135,14 @@ net air-alarm motion.enable ppmc.0.din.28.in-not
 # linksp        <= ppmc.0.din.25.in
 # linksp        => iocontrol.0.
 
-
-
 addf and2.1.servo-thread
 addf near.1.servo-thread
-
 net spindle-speed encoder.0.velocity => near.1.in1 
 setp near.1.in2 0
 setp near.1.difference 2.0
 net spindle-stopped near.1.out => and2.1
-
 # RELEASE-BUTTON    DI 32
 net release-button  ppmc.0.din.31.in => and2.1in0
-
 # RELEASE-TOOL solenoid        SSR 10
 net release-tool and2.1.out => ppmc.0.dout.09.out
 
@@ -197,8 +157,3 @@ net spindle-locked motion.spindle-locked ppmc.0.din.07.in
 # Tool Caroseul rotate button DI29
 # new sig Rotate-tool
 # net Rotate-tool .0. ppmc.0.din.29.in
-
-
-#
-#
-#
