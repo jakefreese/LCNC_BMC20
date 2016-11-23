@@ -2,7 +2,7 @@
 # HURCO BMC30 JAKE FREESE 11/23/2016
 
 loadrt near count=100
-loardrt and2 count=100
+loadrt and2 count=100
 loadrt message names=EstopWrite,motion.enable,air-alarm,lube_level messages="EMERGENCY STOP,MOTION-DISABLE,LOW AIR PRESSURE,LOW LUBE"
 addf EstopWrite servo-thread
 addf motion.enable servo-thread
