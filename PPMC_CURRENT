@@ -35,6 +35,9 @@ net amp-fault-x axis.0.amp-fault-in <= ppmc.0.din.00.in
 # Servo enable     SSR7
 net Xenable axis.0.amp-enable-out => ppmc.0.dout.06.out
 
+# Feedhold DI30
+net Feedhold motion.feed-hold <= ppmc.0.din.30.in
+
 net Xindex <= axis.0.index-enable ppmc.0.encoder.00.index-enable
 net Yindex <= axis.1.index-enable ppmc.0.encoder.01.index-enable
 net Zindex <= axis.2.index-enable ppmc.0.encoder.02.index-enable
