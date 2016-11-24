@@ -23,6 +23,7 @@ loadrt scope_rt
 loadrt ddt count=4
 loadrt estop_latch count=1
 loadrt and2 count=4
+loadrt near count=4
 
 # set up the realtime thread
 # read inputs first
