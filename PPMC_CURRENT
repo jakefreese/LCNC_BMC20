@@ -3,13 +3,14 @@
 
 loadrt near count=100
 loadrt and2 count=100
-loadrt message names=EstopWrite,motion.enable,air-alarm,lube_level 
-messages="EMERGENCY STOP,MOTION-DISABLE,LOW AIR PRESSURE,LOW LUBE"
+loadrt message count=5 names=EstopWrite,motion.enable,air-alarm,lube_level messages=5
+messages="OH SHIT,MOTION-DISABLE,LOW AIR PRESSURE,LOW LUBE,SPINDLE-ALARM"
 
 addf EstopWrite servo-thread
 addf motion.enable servo-thread
 addf air-alarm servo-thread
 addf lube_level servo-thread
+addf Spindle-alarm servo-thread
 
 net Xmaxlim axis.0.pos-lim-sw-in ppmc.0.din.01.in-not
 net Xminlim axis.0.neg-lim-sw-in ppmc.0.din.02.in-not
