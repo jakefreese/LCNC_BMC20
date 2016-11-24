@@ -1,8 +1,7 @@
 # HAL config file for Pico Systems USC board
 # HURCO BMC30 JAKE FREESE 11/23/2016
 
-loadrt near count=100
-loadrt and2 count=100
+
 loadrt message count=5 names=EstopWrite,motion.enable,air-alarm,lube_level messages=5
 messages="OH SHIT,MOTION-DISABLE,LOW AIR PRESSURE,LOW LUBE,SPINDLE-ALARM"
 
