@@ -1,0 +1,21 @@
+<pyvcp>
+ <label>
+  <text>"Spindle Speed:"</text>
+</label>
+<bar>
+  <halpin>"SpindleRPM"</halpin>
+<max_>8000</max_>
+</bar>
+<vbox>
+<relief>RIDGE</relief>
+<bd>6</bd>
+ <label>
+  <text>"Feed Hold:"</text>
+</label>
+<led>
+  <halpin>"FeedHold"</halpin>
+<on_color>"red"</on_color>
+<off_color>"green"</off_color>
+</led>
+</vbox>
+</pyvcp>
