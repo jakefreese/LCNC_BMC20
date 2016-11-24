@@ -12,33 +12,34 @@ addf air-alarm servo-thread
 addf lube_level servo-thread
 addf Spindle-alarm servo-thread
 
-net Xmaxlim axis.0.pos-lim-sw-in ppmc.0.din.01.in-not
-net Xminlim axis.0.neg-lim-sw-in ppmc.0.din.02.in-not
+net Xmaxlim axis.0.pos-lim-sw-in <= ppmc.0.din.01.in-not
+net Xminlim axis.0.neg-lim-sw-in <= ppmc.0.din.02.in-not
 net Xmaxlim axis.0.home-sw-in
 
-net Ymaxlim axis.1.pos-lim-sw-in ppmc.0.din.03.in-not
-net Yminlim axis.1.neg-lim-sw-in ppmc.0.din.04.in-not
+net Ymaxlim axis.1.pos-lim-sw-in <= ppmc.0.din.03.in-not
+net Yminlim axis.1.neg-lim-sw-in <= ppmc.0.din.04.in-not
 net Ymaxlim axis.1.home-sw-in
 
-net Zmaxlim axis.2.pos-lim-sw-in ppmc.0.din.06.in-not
-net Zminlim axis.2.neg-lim-sw-in ppmc.0.din.05.in-not
+net Zmaxlim axis.2.pos-lim-sw-in <= ppmc.0.din.06.in-not
+net Zminlim axis.2.neg-lim-sw-in <= ppmc.0.din.05.in-not
 net Zmaxlim axis.2.home-sw-in
 
 loadrt logic personality=0x203
 addf logic.0 servo-thread
-net x-homing axis.0.homing => logic.0.in-00 
-net y-homing axis.1.homing => logic.0.in-01 
-net z-homing axis.2.homing => logic.0.in-02
+net x-homing axis.0.homing <= logic.0.in-00 
+net y-homing axis.1.homing <= logic.0.in-01 
+net z-homing axis.2.homing <= logic.0.in-02
 net any-homing logic.0.or => ppmc.0.dout.00.out
 
 # Servo Alarms  ALL ALARMS DI0
-net amp-fault-x axis.0.amp-fault-in ppmc.0.din.00.in
+net amp-fault-x axis.0.amp-fault-in <= ppmc.0.din.00.in
 # Servo enable     SSR7
-net Xenable <= axis.0.amp-enable-out ppmc.0.dout.06.out
+net Xenable axis.0.amp-enable-out => ppmc.0.dout.06.out
 
 net Xindex <= axis.0.index-enable ppmc.0.encoder.00.index-enable
 net Yindex <= axis.1.index-enable ppmc.0.encoder.01.index-enable
 net Zindex <= axis.2.index-enable ppmc.0.encoder.02.index-enable
+net Sindex <= axis.3.index-enable ppmc.0.encoder.03.index-enable
 
 net ppmcEstop ppmc.0.din.estop.in
 net ppmcEstop and2.0.in0
@@ -54,10 +55,10 @@ net emc-estop-out estop-latch.0.ok-in
 net emc-estop-reset iocontrol.0.user-request-enable
 net emc-estop-reset estop-latch.0.reset
 
-# Spindle Forward Run SSR 3
-net SpindleFwd <= motion.spindle-forward ppmc.0.dout.03.out
+# Spindle ON SSR 3
+net spindle-on motion.spindle-on => ppmc.0.dout.03.out
 # Spindle Alarm    DI 07
-net Spindle-alarm => motion.enable ppmc.0.din.07.in
+net Spindle-alarm motion.enable <= ppmc.0.din.07.in
 
 # Servo Alarm Reset          SSR 4
 
@@ -69,8 +70,8 @@ net spindle-orient motion.spindle-orient => ppmc.0.dout.06.out
 net spindle-is-oriented motion.spindle-is-oriented <= ppmc.0.din.14.in
 
 # connect mist/flood coolant to I/O controller  SSR 15 and 16 
-net coolant-mist iocontrol.0.coolant-mist ppmc.0.dout.14.out
-net coolant-flood iocontrol.0.coolant-flood ppmc.0.dout.15.out
+net coolant-mist iocontrol.0.coolant-mist => ppmc.0.dout.14.out
+net coolant-flood iocontrol.0.coolant-flood => ppmc.0.dout.15.out
 
 net lube_level iocontrol.0.lube_level <= ppmc.0.din.27.in
 #setp lube_level.edge 0 #this pin should be active low
@@ -114,11 +115,11 @@ net release-button  ppmc.0.din.31.in => and2.1in0
 net release-tool and2.1.out => ppmc.0.dout.09.out
 
 # Spindle Limit +     DI 08
-net spindle-locked motion.spindle-locked ppmc.0.din.07.in
-#net spindle-inhibit motion.spindle-inhibit ppmc.0.din.07.in-not
+net spindle-locked motion.spindle-locked <= ppmc.0.din.07.in
+#net spindle-inhibit motion.spindle-inhibit <= ppmc.0.din.07.in-not
 
 # Mag ROTATE          SSR 9
 
 # Tool Caroseul rotate button DI29
 # new sig Rotate-tool
-# net Rotate-tool .0. ppmc.0.din.29.in
+# net Rotate-tool .0. <= ppmc.0.din.29.in
