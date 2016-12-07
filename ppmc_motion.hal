@@ -60,6 +60,7 @@ net spindle-DAC-cmd  mult2.1.out lowpass.0.in
 net spindle-DAC-filt lowpass.0.out => abs.0.in
 setp lowpass.0.gain 0.005
 net spindle-DAC-abs abs.0.out  ppmc.0.DAC.03.value
+setp ppmc.0.encoder.04.scale 5000
 
 
 # spindle speed display
