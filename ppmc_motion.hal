@@ -66,7 +66,7 @@ net spindle-DAC-abs abs.0.out  ppmc.0.DAC.03.value
 addf lowpass.1 servo-thread
 net spinraw    ppmc.0.encoder.04.delta conv-s32-float.0.in
 net spinfloat  conv-s32-float.0.out mult2.0.in0
-setp   mult2.0.in1 185.185185            # (60/5000/rev)
+setp   mult2.0.in1 0.012            # (60/5000/rev)
 net rawSpindleRPM mult2.0.out => lowpass.1.in
 setp lowpass.1.gain 0.02
 newsig  SpindleRPM float
