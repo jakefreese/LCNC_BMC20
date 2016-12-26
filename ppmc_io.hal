@@ -1,7 +1,7 @@
 # HAL config file for Pico Systems USC board
 #
 # Connect motion controller I/Os
-# HURCO BMC30 JAKE FREESE 11/11/2016
+# HURCO BMC30 JAKE FREESE 12/26/2016
 
 loadrt message names=EstopWrite,motion.enable,air-alarm messages="EMERGENCY STOP,MOTION-DISABLE,LOW AIR PRESSURE"
 addf EstopWrite servo-thread
@@ -39,13 +39,15 @@ net Xenable <= axis.0.amp-enable-out ppmc.0.dout.06.out
 newsig Xindex bit
 newsig Yindex  bit
 newsig Zindex bit
+newsig Rindex bit
 linksp Xindex <= ppmc.0.encoder.00.index-enable
 linksp Xindex => axis.0.index-enable
 linksp Yindex <= ppmc.0.encoder.01.index-enable
 linksp Yindex => axis.1.index-enable
 linksp Zindex <= ppmc.0.encoder.02.index-enable
 linksp Zindex => axis.2.index-enable
-
+linksp Rindex <= ppmc.0.encoder.03.index-enable
+linksp Rindex => axis.3.index-enable 
 #
 # Connect I/O controller I/Os
 #
