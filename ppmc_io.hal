@@ -1,7 +1,7 @@
 # HAL config file for Pico Systems USC board
 #
 # Connect motion controller I/Os
-# HURCO BMC30 JAKE FREESE 12/26/2016
+# HURCO BMC30 JAKE FREESE 12/27/2016
 
 loadrt message names=EstopWrite,motion.enable,air-alarm messages="EMERGENCY STOP,MOTION-DISABLE,LOW AIR PRESSURE"
 addf EstopWrite servo-thread
@@ -34,27 +34,17 @@ net amp-fault-x axis.0.amp-fault-in ppmc.0.din.00.in
 # Servo enable     SSR7
 net Xenable <= axis.0.amp-enable-out ppmc.0.dout.06.out
 
-# connect index pulses to motion controller
-# do these when index pulsing is figured out
-newsig Xindex bit
-newsig Yindex  bit
-newsig Zindex bit
-newsig Rindex bit
-linksp Xindex <= ppmc.0.encoder.00.index-enable
-linksp Xindex => axis.0.index-enable
-linksp Yindex <= ppmc.0.encoder.01.index-enable
-linksp Yindex => axis.1.index-enable
-linksp Zindex <= ppmc.0.encoder.02.index-enable
-linksp Zindex => axis.2.index-enable
-linksp Rindex <= ppmc.0.encoder.03.index-enable
-linksp Rindex => axis.3.index-enable 
-#
-# Connect I/O controller I/Os
-#
+#AXIS ENCODERS
+net Xindex axis.0.index-enable ppmc.0.encoder.00.index-enable
+net Yindex axis.1.index-enable ppmc.0.encoder.01.index-enable
+net Zindex axis.2.index-enable ppmc.0.encoder.02.index-enable
 
-# connect e-stop write/sense to I/O controller
-# and ppmc's fault with estop's output, so  estop FF is reset, but
-#      prevent continued estop signal from ppmc from holding FF cleared
+#SPINDLE ENCODER
+net spindle-index-en  motion.spindle-index-enable ppmc.0.encoder.03.index-enable
+setp ppmc.0.encoder.03.scale 20000
+net spindle-pos   ppmc.0.encoder.03.position  motion.spindle-revs
+
+#ESTOP
 net ppmcEstop ppmc.0.din.estop.in
 net ppmcEstop and2.0.in0
 net EstopOkIn estop-latch.0.fault-in
@@ -101,12 +91,9 @@ net emc-estop-reset estop-latch.0.reset
 #net amp-fault-S axis.S.amp-fault-in ppmc.0.din.15.in
 
 # connect spindle speed up/down to I/O controller  Speed command on DAC CARD
-#newsig SpindleUp bit
-#newsig SpindleDown bit
-#linksp SpindleUp <= ppmc.0.dout.06.out
-#linksp SpindleUp => motion.spindle-incr-speed
-#linksp SpindleDown <= ppmc.0.dout.05.out
-#linksp SpindleDown => motion.spindle-decr-speed
+#net SpindleUp motion.spindle-incr-speed ppmc.0.dout.06.out
+#net SpindleDown motion.spindle-decr-speed ppmc.0.dout.05.out
+ 
 
 # connect mist/flood coolant to I/O controller  SSR 15 and 16 
 net coolant-mist iocontrol.0.coolant-mist ppmc.0.dout.14.out
