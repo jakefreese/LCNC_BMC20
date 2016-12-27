@@ -39,11 +39,6 @@ net Xindex axis.0.index-enable ppmc.0.encoder.00.index-enable
 net Yindex axis.1.index-enable ppmc.0.encoder.01.index-enable
 net Zindex axis.2.index-enable ppmc.0.encoder.02.index-enable
 
-#SPINDLE ENCODER
-net spindle-index-en  motion.spindle-index-enable ppmc.0.encoder.03.index-enable
-setp ppmc.0.encoder.03.scale 20000
-net spindle-pos   ppmc.0.encoder.03.position  motion.spindle-revs
-
 #ESTOP
 net ppmcEstop ppmc.0.din.estop.in
 net ppmcEstop and2.0.in0
