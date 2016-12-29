@@ -1,13 +1,12 @@
 # HAL config file for Pico Systems USC board
-#
-# Connect motion controller I/Os
-# HURCO BMC30 JAKE FREESE 12/27/2016
+# HURCO BMC30 JAKE FREESE 12/25/2016
 
-loadrt message names=EstopWrite,motion.enable,air-alarm messages="EMERGENCY STOP,MOTION-DISABLE,LOW AIR PRESSURE"
+
+loadrt message names=EstopWrite,motion.enable,air-alarm,lube_level messages="EMERGENCY STOP,MOTION-DISABLE,LOW AIR PRESSURE,LOW LUBE"
 addf EstopWrite servo-thread
 addf motion.enable servo-thread
 addf air-alarm servo-thread
-
+addf lube_level servo-thread
 
 net Xmaxlim axis.0.pos-lim-sw-in ppmc.0.din.01.in-not
 net Xminlim axis.0.neg-lim-sw-in ppmc.0.din.02.in-not
@@ -30,14 +29,12 @@ net any-homing logic.0.or => ppmc.0.dout.00.out
 
 # Servo Alarms  ALL ALARMS DI0
 net amp-fault-x axis.0.amp-fault-in ppmc.0.din.00.in
-
 # Servo enable     SSR7
 net Xenable <= axis.0.amp-enable-out ppmc.0.dout.06.out
-
-#AXIS ENCODERS
-net Xindex axis.0.index-enable ppmc.0.encoder.00.index-enable
-net Yindex axis.1.index-enable ppmc.0.encoder.01.index-enable
-net Zindex axis.2.index-enable ppmc.0.encoder.02.index-enable
+#ENCODERS 
+net Xindex <= axis.0.index-enable ppmc.0.encoder.00.index-enable
+net Yindex <= axis.1.index-enable ppmc.0.encoder.01.index-enable
+net Zindex <= axis.2.index-enable ppmc.0.encoder.02.index-enable
 
 #ESTOP
 net ppmcEstop ppmc.0.din.estop.in
@@ -54,117 +51,107 @@ net emc-estop-out estop-latch.0.ok-in
 net emc-estop-reset iocontrol.0.user-request-enable
 net emc-estop-reset estop-latch.0.reset
 
-#loadrt message names=ppmcEstop messages="OH SHIT"
-#addf ppmcEstop iocontrol
-#setp ppmcEstop.edge 0 #this pin should be active low
-#net ppmcEstop motion.enable ppmc.0.din.estop.trigger
-
-
-#newsig EstopSense bit
-#newsig EstopWrite bit
-#linksp EstopSense <= ppmc.0.din.estop.in-not
-#linksp EstopSense => iocontrol.0.emc-enable-in
-#linksp EstopWrite <= ppmc.0.dout.07.out
-#linksp EstopWrite => iocontrol.0.user-enable-out
-#estop may need to be inverted
-
-
-# connect spindle fwd/rev to I/O controller Spindle Forward Run 1 SSR 8
-# newsig SpindleOn bit
-# net SpindleOn motion.spindle-on ppmc.0.dout.08.out
+#Spindle Forward Run 1 SSR 3
+net SpindleON <= motion.spindle-on ppmc.0.dout.03.out
+#net SpindleFwd <= motion.spindle-forward ppmc.0.dout.03.out
 
 # Servo Alarm Reset          SSR 4
-#net "" motion."" ppmc.0.dout.03.out
+# linksp        <= ppmc.0.dout.04.out
+# linksp        => iocontrol.0.
 
 # Low Speed Winding Select   SSR 5
-#net "" motion."" ppmc.0.dout.04.out
-# Orient Command             SSR 6
-#net spindle.orient motion.spindle-orient ppmc.0.dout.05.out
-# Orient Complete            DI 14  
-#net spindle-is-oriented motion.spindle-is-oriented ppmc.0.din.14.in
-# Spindle Alarm              DI 15
-#net amp-fault-S axis.S.amp-fault-in ppmc.0.din.15.in
+# Low speed comp             DI9
+# linksp        <= ppmc.0.dout.05.out
+# linksp        => iocontrol.0.
 
-# connect spindle speed up/down to I/O controller  Speed command on DAC CARD
-#net SpindleUp motion.spindle-incr-speed ppmc.0.dout.06.out
-#net SpindleDown motion.spindle-decr-speed ppmc.0.dout.05.out
- 
+# Orient Command             SSR 6
+# Orient Complete            DI 10
+net orient-spindle <= motion.spindle-orient ppmc.0.dout.05.out
+net spindle-is-oriented => motion.spindle-is-oriented ppmc.0.din.10.in
+
+# Spindle Alarm              DI 08
+#net motion.inhibit => motion.spindle-is-oriented ppmc.0.08
 
 # connect mist/flood coolant to I/O controller  SSR 15 and 16 
 net coolant-mist iocontrol.0.coolant-mist ppmc.0.dout.14.out
 net coolant-flood iocontrol.0.coolant-flood ppmc.0.dout.15.out
 
-
-# Way Lube Pump combined with servo on
-# Way Lube Level      DI 27
 net lube_level iocontrol.0.lube_level ppmc.0.din.27.in
-#loadrt message names=lube_level messages="LOW LUBE"
-#addf lube_level iocontrol
+
 #setp lube_level.edge 0 #this pin should be active low
 #net lube_level iocontrol.0.lube_level ppmc.0.din.27.trigger
-
 
 # Air Pressure Switch DI 28 
 net air-alarm motion.enable ppmc.0.din.28.in-not
 
-
 # X Torque            DI 16
-#net "" iocontrol ppmc.0.din.16.in
+# linksp        <= ppmc.0.din.16.in
+# linksp        => iocontrol.0.
 
 # Y Torque            DI 17
-#net "" iocontrol ppmc.0.din.17.in
+# linksp        <= ppmc.0.din.17.in
+# linksp        => iocontrol.0.
 
 # Z Torque            DI 18
-#net "" iocontrol ppmc.0.din.18.in
+# linksp        <= ppmc.0.din.18.in
+# linksp        => iocontrol.0.
 
 # S Torque            DI 19
-#net "" iocontrol ppmc.0.din.19.in
+# linksp        <= ppmc.0.din.19.in
+# linksp        => iocontrol.0.
 
 # TOOL CHANGER
 # Mag POS             DI 20
-#net "" iocontrol ppmc.0.din.20.in
+# linksp        <= ppmc.0.din.20.in
+# linksp        => iocontrol.0.
 
 # Mag Right           DI 21  SSR 11
-#net "" iocontrol ppmc.0.din.21.in
-#net "" iocontrol ppmc.0.dout.11.out
+# linksp        <= ppmc.0.din.21.in
+# linksp        => iocontrol.0.
+# linksp        <= ppmc.0.dout.11.out
+# linksp        => iocontrol.0.
 
 # Mag Left            DI 22  SSR 12
-#net "" iocontrol ppmc.0.din.22.in
-#net "" iocontrol ppmc.0.dout.12.out
-
+# linksp        <= ppmc.0.din.22.in
+# linksp        => iocontrol.0.
+# linksp        <= ppmc.0.dout.12.out
+# linksp        => iocontrol.0.
 
 # Mag Down            DI 23  SSR 13
-#net "" iocontrol ppmc.0.din.23.in
-#net "" iocontrol ppmc.0.dout.13.out
-
+# linksp        <= ppmc.0.din.23.in
+# linksp        => iocontrol.0.
+# linksp        <= ppmc.0.dout.13.out
+# linksp        => iocontrol.0.
 
 # Mag UP              DI 24  SSR 14
-#net "" iocontrol ppmc.0.din.24.in
-#net "" iocontrol ppmc.0.dout.14.out
-
+# linksp        <= ppmc.0.din.24.in
+# linksp        => iocontrol.0.
+# linksp        <= ppmc.0.dout.14.out
+# linksp        => iocontrol.0.
 
 # Mag REF             DI 25 
-#net "" iocontrol ppmc.0.din.25.in
+# linksp        <= ppmc.0.din.25.in
+# linksp        => iocontrol.0.
 
-# Tool Unclamp BUTTON    DI 26
-net release-button iocontrol ppmc.0.din.07.in
+#addf and2 servo-thread
+addf near.1 servo-thread
+#net spindle-speed encoder.0.velocity => near.1.in1 
+#setp near.1.in2 0
+#setp near.1.difference 2.0
+#net spindle-stopped near.1.out => and2.1.in0
+# RELEASE-BUTTON    DI 32
+net release-button  ppmc.0.din.31.in 
+# RELEASE-TOOL solenoid        SSR 10
+net release-tool ppmc.0.dout.09.out
 
-# Tool Unclamp        SSR 10
-net release-tool iocontrol ppmc.0.dout.09.out
-
-# Spindle Limit +     DI 11
-net spindle-locked motion.spindle-locked ppmc.0.din.31.in
-net spindle-inhibit motion.spindle-inhibit ppmc.0.din.31.in-not
+# Spindle Limit +     DI 08
+#net spindle-locked motion.spindle-locked ppmc.0.din.07.in
+net spindle-inhibit motion.spindle-inhibit ppmc.0.din.07.in-not
 
 # Mag ROTATE          SSR 9
-#net "" iocontrol ppmc.0.dout.10.out
+# linksp        <= ppmc.0.dout.09.out
+# linksp        => iocontrol.0.
 
 # Tool Caroseul rotate button DI29
-#net "" iocontrol ppmc.0.din.29.in
-
-
-#TOUCH PROBE
-#WAKE UP PROBE
-#net "" iocontrol ppmc.0.dout.20.out
-#INPUT FROM PROBE
-#net "" iocontrol ppmc.0.din.20.in
+# new sig Rotate-tool
+# net Rotate-tool .0. ppmc.0.din.29.in
