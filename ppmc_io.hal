@@ -133,16 +133,25 @@ net air-alarm motion.enable ppmc.0.din.28.in-not
 # linksp        <= ppmc.0.din.25.in
 # linksp        => iocontrol.0.
 
-#addf and2 servo-thread
+
+
+ loadusr -W hal_manualtoolchange
+ net tool-change iocontrol.0.tool-change => hal_manualtoolchange.change
+ net tool-changed iocontrol.0.tool-changed <= hal_manualtoolchange.changed
+ net tool-number iocontrol.0.tool-prep-number => hal_manualtoolchange.number
+ net tool-prepare-loopback iocontrol.0.tool-prepare => iocontrol.0.tool-prepared
+
+
+addf and2 servo-thread
 addf near.1 servo-thread
-#net spindle-speed encoder.0.velocity => near.1.in1 
-#setp near.1.in2 0
-#setp near.1.difference 2.0
-#net spindle-stopped near.1.out => and2.1.in0
+#net SpindleON motion.spindle-on => near.1.in1 
+setp near.1.in2 0
+setp near.1.difference 2.0
+net spindle-stopped near.1.out => and2.1.in0
 # RELEASE-BUTTON    DI 32
-net release-button  ppmc.0.din.31.in 
+net release-button  ppmc.0.din.31.in and2.1.in1
 # RELEASE-TOOL solenoid        SSR 10
-net release-tool ppmc.0.dout.09.out
+net release-tool and2.1.out ppmc.0.dout.09.out
 
 # Spindle Limit +     DI 08
 #net spindle-locked motion.spindle-locked ppmc.0.din.07.in
