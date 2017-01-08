@@ -3,13 +3,6 @@
 
 
 loadrt message names=EstopWrite,motion.enable,air-alarm,lube_level messages="EMERGENCY STOP,MOTION-DISABLE,LOW AIR PRESSURE,LOW LUBE"
-addf EstopWrite servo-thread
-addf motion.enable servo-thread
-addf air-alarm servo-thread
-addf lube_level servo-thread
-addf and2 servo-thread
-addf near.1 servo-thread
-addf logic.0 servo-thread
 
 net Xmaxlim axis.0.pos-lim-sw-in ppmc.0.din.01.in-not
 net Xminlim axis.0.neg-lim-sw-in ppmc.0.din.02.in-not
