@@ -7,6 +7,9 @@ addf EstopWrite servo-thread
 addf motion.enable servo-thread
 addf air-alarm servo-thread
 addf lube_level servo-thread
+addf and2 servo-thread
+addf near.1 servo-thread
+addf logic.0 servo-thread
 
 net Xmaxlim axis.0.pos-lim-sw-in ppmc.0.din.01.in-not
 net Xminlim axis.0.neg-lim-sw-in ppmc.0.din.02.in-not
@@ -21,7 +24,6 @@ net Zminlim axis.2.neg-lim-sw-in ppmc.0.din.05.in-not
 net Zmaxlim axis.2.home-sw-in
 
 loadrt logic personality=0x203
-addf logic.0 servo-thread
 net x-homing axis.0.homing => logic.0.in-00 
 net y-homing axis.1.homing => logic.0.in-01 
 net z-homing axis.2.homing => logic.0.in-02
@@ -141,9 +143,6 @@ net air-alarm motion.enable ppmc.0.din.28.in-not
  net tool-number iocontrol.0.tool-prep-number => hal_manualtoolchange.number
  net tool-prepare-loopback iocontrol.0.tool-prepare => iocontrol.0.tool-prepared
 
-
-addf and2 servo-thread
-addf near.1 servo-thread
 #net SpindleON motion.spindle-on => near.1.in1 
 setp near.1.in2 0
 setp near.1.difference 2.0
