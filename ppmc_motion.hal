@@ -63,6 +63,13 @@ net spindle-DAC-filt lowpass.0.out => abs.0.in
 setp lowpass.0.gain 0.005
 net spindle-DAC-abs abs.0.out  ppmc.0.DAC.03.value
 
+#Spindle at speed
+addf near.0 servo-thread
+net spindle-cmd near.0.in1
+net spindle-velocity near.0.in2
+net spindle-at-speed motion.spindle-at-speed <= near.0.out
+setp near.0.scale 1.01
+
 # spindle speed display
 addf lowpass.1 servo-thread
 net spinraw    ppmc.0.encoder.03.delta conv-s32-float.0.in
