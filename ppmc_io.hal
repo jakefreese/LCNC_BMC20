@@ -1,8 +1,12 @@
 # HAL config file for Pico Systems USC board
-# HURCO BMC30 JAKE FREESE 12/25/2016
+# HURCO BMC30 JAKE FREESE 02/11/2017
 
 
 loadrt message names=EstopWrite,motion.enable,air-alarm,lube_level messages="EMERGENCY STOP,MOTION-DISABLE,LOW AIR PRESSURE,LOW LUBE"
+addf EstopWrite servo-thread
+addf motion.enable servo-thread
+addf air-alarm servo-thread
+addf lube_level servo-thread
 
 net Xmaxlim axis.0.pos-lim-sw-in ppmc.0.din.01.in-not
 net Xminlim axis.0.neg-lim-sw-in ppmc.0.din.02.in-not
@@ -17,6 +21,7 @@ net Zminlim axis.2.neg-lim-sw-in ppmc.0.din.05.in-not
 net Zmaxlim axis.2.home-sw-in
 
 loadrt logic personality=0x203
+addf logic.0 servo-thread
 net x-homing axis.0.homing => logic.0.in-00 
 net y-homing axis.1.homing => logic.0.in-01 
 net z-homing axis.2.homing => logic.0.in-02
@@ -47,8 +52,9 @@ net emc-estop-reset iocontrol.0.user-request-enable
 net emc-estop-reset estop-latch.0.reset
 
 #Spindle Forward Run 1 SSR 3
-net SpindleON <= motion.spindle-on ppmc.0.dout.03.out
+#net Spindle-enable motion.spindle-on => ppmc.0.dout.03.out
 #net SpindleFwd <= motion.spindle-forward ppmc.0.dout.03.out
+#net spindle-fwd motion.spindle-forward => ppmc.0.dout.03.out
 
 # Servo Alarm Reset          SSR 4
 # linksp        <= ppmc.0.dout.04.out
@@ -65,7 +71,7 @@ net orient-spindle <= motion.spindle-orient ppmc.0.dout.05.out
 net spindle-is-oriented => motion.spindle-is-oriented ppmc.0.din.10.in
 
 # Spindle Alarm              DI 08
-#net motion.inhibit => motion.spindle-is-oriented ppmc.0.08
+#net spindle-alarm => motion.enable ppmc.0.din.08.in
 
 # connect mist/flood coolant to I/O controller  SSR 15 and 16 
 net coolant-mist iocontrol.0.coolant-mist ppmc.0.dout.14.out
@@ -129,7 +135,6 @@ net air-alarm motion.enable ppmc.0.din.28.in-not
 # linksp        => iocontrol.0.
 
 
-
  loadusr -W hal_manualtoolchange
  net tool-change iocontrol.0.tool-change => hal_manualtoolchange.change
  net tool-changed iocontrol.0.tool-changed <= hal_manualtoolchange.changed
@@ -141,13 +146,13 @@ setp near.1.in2 0
 setp near.1.difference 2.0
 net spindle-stopped near.1.out => and2.1.in0
 # RELEASE-BUTTON    DI 32
-net release-button  ppmc.0.din.31.in and2.1.in1
+net release-button  ppmc.0.din.31.in-not and2.1.in1
 # RELEASE-TOOL solenoid        SSR 10
 net release-tool and2.1.out ppmc.0.dout.09.out
 
 # Spindle Limit +     DI 08
 #net spindle-locked motion.spindle-locked ppmc.0.din.07.in
-net spindle-inhibit motion.spindle-inhibit ppmc.0.din.07.in-not
+net spindle-inhibit motion.spindle-inhibit ppmc.0.din.07.in
 
 # Mag ROTATE          SSR 9
 # linksp        <= ppmc.0.dout.09.out
