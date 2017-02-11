@@ -1,4 +1,5 @@
-# sample file pulls all load commands into a single file
+# HURCO BMC30 JAKE FREESE REVISION DATE 02/10/2017 
+#sample file pulls all load commands into a single file
 # when emc2 starts it loads iocontrol
 # this file enables encoder velocity timestamping
 # it will only work on PPMC encoder boards with
@@ -34,13 +35,11 @@ loadrt conv_s32_float count=5
 loadrt mult2 count=5
 loadrt abs count=5
 loadrt lut5 count=2
-ddf EstopWrite servo-thread
-addf motion.enable servo-thread
-addf air-alarm servo-thread
-addf lube_level servo-thread
-addf and2 servo-thread
+
+
+addf and2.1 servo-thread
 addf near.1 servo-thread
-addf logic.0 servo-thread
+
 # set up the realtime thread
 # read inputs first
 addf ppmc.0.read servo-thread
