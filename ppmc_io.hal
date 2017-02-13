@@ -66,10 +66,6 @@ net emc-estop-reset estop-latch.0.reset
 # linksp        <= ppmc.0.dout.05.out
 # linksp        => iocontrol.0.
 
-# Orient Command             SSR 6
-# Orient Complete            DI 08
-net orient-spindle <= motion.spindle-orient ppmc.0.dout.05.out
-net spindle-is-oriented => motion.spindle-is-oriented ppmc.0.din.07.in
 
 # Spindle Alarm              DI 09
 #net spindle-alarm => motion.enable ppmc.0.din.08.in
@@ -98,18 +94,6 @@ net air-alarm motion.enable ppmc.0.din.28.in-not
 # S Torque            DI 19
 #net Spindle torque ppmc.0.din.15.in
 
-# TOOL CHANGER
-# Mag POS             DI 20
-#net MAGPOS ppmc.0.din.19.in
-# Mag REF             DI 21 
-#net MAGREF ppmc.0.din.20.in
-# Mag Right           DI 22  SSR 11
-#net MAG_RIGHT_SW ppmc.0.din.21.in
-#net MAG_RIGHT_SOL ppmc.0.dout.10.out
-# Mag Left            DI 23  SSR 12
-#net MAG_LEFT_SW ppmc.0.din.22.in
-#net MAG_LEFT_SOL ppmc.0.dout.11.out
-
  loadusr -W hal_manualtoolchange
  net tool-change iocontrol.0.tool-change => hal_manualtoolchange.change
  net tool-changed iocontrol.0.tool-changed <= hal_manualtoolchange.changed
@@ -132,8 +116,3 @@ net release-tool and2.1.out ppmc.0.dout.09.out
 net spindle-inhibit motion.spindle-inhibit ppmc.0.din.09.in
 #net spindle-unlocked ppmc.0.din.10.in
 
-# Mag ROTATE          SSR 9
-#net mag rotate ppmc.0.dout.08.out
-
-# Tool Caroseul rotate button DI29
-# net Rotate-tool ppmc.0.din.29.in
