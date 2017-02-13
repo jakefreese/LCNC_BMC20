@@ -8,6 +8,7 @@ addf motion.enable servo-thread
 addf air-alarm servo-thread
 addf lube_level servo-thread
 
+# Limit switches  DI2&3, 4&5, 6&7
 net Xmaxlim axis.0.pos-lim-sw-in ppmc.0.din.01.in-not
 net Xminlim axis.0.neg-lim-sw-in ppmc.0.din.02.in-not
 net Xmaxlim axis.0.home-sw-in
@@ -61,16 +62,16 @@ net emc-estop-reset estop-latch.0.reset
 # linksp        => iocontrol.0.
 
 # Low Speed Winding Select   SSR 5
-# Low speed comp             DI9
+# Low speed comp             DI
 # linksp        <= ppmc.0.dout.05.out
 # linksp        => iocontrol.0.
 
 # Orient Command             SSR 6
-# Orient Complete            DI 10
+# Orient Complete            DI 08
 net orient-spindle <= motion.spindle-orient ppmc.0.dout.05.out
-net spindle-is-oriented => motion.spindle-is-oriented ppmc.0.din.10.in
+net spindle-is-oriented => motion.spindle-is-oriented ppmc.0.din.07.in
 
-# Spindle Alarm              DI 08
+# Spindle Alarm              DI 09
 #net spindle-alarm => motion.enable ppmc.0.din.08.in
 
 # connect mist/flood coolant to I/O controller  SSR 15 and 16 
@@ -86,54 +87,28 @@ net lube_level iocontrol.0.lube_level ppmc.0.din.27.in
 net air-alarm motion.enable ppmc.0.din.28.in-not
 
 # X Torque            DI 16
-# linksp        <= ppmc.0.din.16.in
-# linksp        => iocontrol.0.
+#net X torque ppmc.0.din.15.in
 
 # Y Torque            DI 17
-# linksp        <= ppmc.0.din.17.in
-# linksp        => iocontrol.0.
+#net Y torque ppmc.0.din.15.in
 
 # Z Torque            DI 18
-# linksp        <= ppmc.0.din.18.in
-# linksp        => iocontrol.0.
+#net Z torque ppmc.0.din.15.in
 
 # S Torque            DI 19
-# linksp        <= ppmc.0.din.19.in
-# linksp        => iocontrol.0.
+#net Spindle torque ppmc.0.din.15.in
 
 # TOOL CHANGER
 # Mag POS             DI 20
-# linksp        <= ppmc.0.din.20.in
-# linksp        => iocontrol.0.
-
-# Mag Right           DI 21  SSR 11
-# linksp        <= ppmc.0.din.21.in
-# linksp        => iocontrol.0.
-# linksp        <= ppmc.0.dout.11.out
-# linksp        => iocontrol.0.
-
-# Mag Left            DI 22  SSR 12
-# linksp        <= ppmc.0.din.22.in
-# linksp        => iocontrol.0.
-# linksp        <= ppmc.0.dout.12.out
-# linksp        => iocontrol.0.
-
-# Mag Down            DI 23  SSR 13
-# linksp        <= ppmc.0.din.23.in
-# linksp        => iocontrol.0.
-# linksp        <= ppmc.0.dout.13.out
-# linksp        => iocontrol.0.
-
-# Mag UP              DI 24  SSR 14
-# linksp        <= ppmc.0.din.24.in
-# linksp        => iocontrol.0.
-# linksp        <= ppmc.0.dout.14.out
-# linksp        => iocontrol.0.
-
-# Mag REF             DI 25 
-# linksp        <= ppmc.0.din.25.in
-# linksp        => iocontrol.0.
-
+#net MAGPOS ppmc.0.din.19.in
+# Mag REF             DI 21 
+#net MAGREF ppmc.0.din.20.in
+# Mag Right           DI 22  SSR 11
+#net MAG_RIGHT_SW ppmc.0.din.21.in
+#net MAG_RIGHT_SOL ppmc.0.dout.10.out
+# Mag Left            DI 23  SSR 12
+#net MAG_LEFT_SW ppmc.0.din.22.in
+#net MAG_LEFT_SOL ppmc.0.dout.11.out
 
  loadusr -W hal_manualtoolchange
  net tool-change iocontrol.0.tool-change => hal_manualtoolchange.change
@@ -150,14 +125,15 @@ net release-button  ppmc.0.din.31.in-not and2.1.in1
 # RELEASE-TOOL solenoid        SSR 10
 net release-tool and2.1.out ppmc.0.dout.09.out
 
-# Spindle Limit +     DI 08
+# Spindle Limits locked DI10 unlocked DI11
+#Need to find hal pin for "Tool/Spindle Unlocked" 
 #net spindle-locked motion.spindle-locked ppmc.0.din.07.in
-net spindle-inhibit motion.spindle-inhibit ppmc.0.din.07.in
+#net spindle-inhibit motion.spindle-inhibit ppmc.0.din.09.in
+net spindle-inhibit motion.spindle-inhibit ppmc.0.din.09.in
+#net spindle-unlocked ppmc.0.din.10.in
 
 # Mag ROTATE          SSR 9
-# linksp        <= ppmc.0.dout.09.out
-# linksp        => iocontrol.0.
+#net mag rotate ppmc.0.dout.08.out
 
 # Tool Caroseul rotate button DI29
-# new sig Rotate-tool
-# net Rotate-tool .0. ppmc.0.din.29.in
+# net Rotate-tool ppmc.0.din.29.in
