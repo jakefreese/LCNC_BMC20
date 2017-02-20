@@ -2,6 +2,8 @@ o<toolchange> sub
 
 M19 R0  ;align the spindle
 
+****      ; wait for spindle-aligned = true
+
 ; only unload the tool if there is a tool in the spindle
 ; This assumes that the carousel is already aligned correctly. 
 ; It is important to unload the tool before shutting down the machine. 
