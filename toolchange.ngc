@@ -1,8 +1,10 @@
 o<toolchange> sub
 
-M19 R0  ;align the spindle
-
-****      ; wait for spindle-aligned = true
+    M19 R0  ;align the spindle
+    M66 P1 L3 Q5     ; wait for spindle-aligned = true
+    O103 if [#5399 LT0]
+        (abort, failed to orient spindle)
+    O103
 
 ; only unload the tool if there is a tool in the spindle
 ; This assumes that the carousel is already aligned correctly. 
@@ -11,13 +13,13 @@ M19 R0  ;align the spindle
 O100 IF [#<tool_in_spindle> GT 0]
     G53 G0 Z -4
     
-    M64 P2 ; move arm in
+    M63 P2 ; move arm in
     M66 P2 L3 Q5 ; wait for arm-in = true
     O104 if [#5399 LT 0]
         (abort, failed to move arm in)
     O104 endif
 
-    M64 P3 ; release tool
+    M63 P3 ; release tool
     M66 P3 L3 Q2 ; wait for tool-released = true
     O105 if [#5399 LT 0]
         (abort, failed to release tool)
@@ -41,7 +43,7 @@ O200 IF [#<selected_tool> GT 0]
    
     O108 endif
 
-    M64 P2 ; move arm in (might already be in)
+    M63 P2 ; move arm in (might already be in)
     M66 P2 L3 Q5 ; wait for arm-in = true
     O109 if [#5399 LT 0]
         (abort, failed to move arm in)
@@ -51,7 +53,7 @@ O200 IF [#<selected_tool> GT 0]
 
 O200 ENDIF 
 
-M65 P3 ; clamp tool
+M63 P3 ; clamp tool
 M66 P3 L4 Q2 ; wait for tool-locked = true
 O110 if [#5399 LT 0]
     (abort, failed to lock tool)
