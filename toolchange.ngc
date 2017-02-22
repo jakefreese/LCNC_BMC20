@@ -1,5 +1,18 @@
 o<toolchange> sub
 
+; M66
+; P0 carosuel completed ???  <- what will signal carosuel complete
+; P1 spindle alignment
+; P2 Arm IN
+; P3 Arm OUT
+; P  Tool LOCKED
+; P  Tool RELEASED 
+
+; M64 
+;   Arm IN-ACT
+;   Arm OUT-ACT
+;   Release tool
+
     M19 R0  ;align the spindle
     M66 P1 L3 Q5     ; wait for spindle-aligned = true
     O103 if [#5399 LT0]
