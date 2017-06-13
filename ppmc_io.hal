@@ -7,6 +7,7 @@ addf EstopWrite servo-thread
 addf motion.enable servo-thread
 addf air-alarm servo-thread
 addf lube_level servo-thread
+addf spindle-fault servo-thread
 
 # Limit switches  DI2&3, 4&5, 6&7
 net Xmaxlim axis.0.pos-lim-sw-in ppmc.0.din.01.in-not
@@ -32,6 +33,11 @@ net any-homing logic.0.or => ppmc.0.dout.00.out
 net amp-fault-x axis.0.amp-fault-in ppmc.0.din.00.in
 # Servo enable     SSR7
 net Xenable <= axis.0.amp-enable-out ppmc.0.dout.06.out
+# Servo Alarm Reset          SSR 4
+# net servo-reset axis.0.amp-reset ppmc.0.dout.04.out
+# Spindle Alarm              DI 09
+net spindle-fault motion.enable ppmc.0.din.08.in
+
 #ENCODERS 
 net Xindex <= axis.0.index-enable ppmc.0.encoder.00.index-enable
 net Yindex <= axis.1.index-enable ppmc.0.encoder.01.index-enable
@@ -52,23 +58,10 @@ net emc-estop-out estop-latch.0.ok-in
 net emc-estop-reset iocontrol.0.user-request-enable
 net emc-estop-reset estop-latch.0.reset
 
-#Spindle Forward Run 1 SSR 3
-#net Spindle-enable motion.spindle-on => ppmc.0.dout.03.out
-#net SpindleFwd <= motion.spindle-forward ppmc.0.dout.03.out
-#net spindle-fwd motion.spindle-forward => ppmc.0.dout.03.out
-
-# Servo Alarm Reset          SSR 4
-# linksp        <= ppmc.0.dout.04.out
-# linksp        => iocontrol.0.
-
 # Low Speed Winding Select   SSR 5
 # Low speed comp             DI
 # linksp        <= ppmc.0.dout.05.out
 # linksp        => iocontrol.0.
-
-
-# Spindle Alarm              DI 09
-#net spindle-alarm => motion.enable ppmc.0.din.08.in
 
 # connect mist/flood coolant to I/O controller  SSR 15 and 16 
 net coolant-mist iocontrol.0.coolant-mist ppmc.0.dout.14.out
