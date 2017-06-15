@@ -1,10 +1,11 @@
 # HAL config file for Pico Systems USC board
-# HURCO BMC30 JAKE FREESE 02/11/2017
+# HURCO BMC30 JAKE FREESE 06/15/2017
 
 
-loadrt message names=EstopWrite,motion.enable,air-alarm,lube_level messages="EMERGENCY STOP,MOTION-DISABLE,LOW AIR PRESSURE,LOW LUBE"
+loadrt message names=EstopWrite,motion.enable,air-alarm,lube_level,spindle-fault messages="EMERGENCY STOP,MOTION-DISABLE,LOW AIR PRESSURE,LOW LUBE,SPINDLE FAULT"
 addf EstopWrite servo-thread
 addf motion.enable servo-thread
+addf feed-inhibit servo-thread
 addf air-alarm servo-thread
 addf lube_level servo-thread
 addf spindle-fault servo-thread
@@ -36,7 +37,7 @@ net Xenable <= axis.0.amp-enable-out ppmc.0.dout.06.out
 # Servo Alarm Reset          SSR 4
 # net servo-reset axis.0.amp-reset ppmc.0.dout.04.out
 # Spindle Alarm              DI 09
-net spindle-fault motion.enable ppmc.0.din.08.in
+net spindle-fault motion.feed-inhibit ppmc.0.din.08.in
 
 #ENCODERS 
 net Xindex <= axis.0.index-enable ppmc.0.encoder.00.index-enable
@@ -69,21 +70,15 @@ net coolant-flood iocontrol.0.coolant-flood ppmc.0.dout.15.out
 
 net lube_level iocontrol.0.lube_level ppmc.0.din.27.in
 
-#setp lube_level.edge 0 #this pin should be active low
-#net lube_level iocontrol.0.lube_level ppmc.0.din.27.trigger
-
 # Air Pressure Switch DI 28 
 net air-alarm motion.enable ppmc.0.din.28.in-not
 
 # X Torque            DI 16
 #net X torque ppmc.0.din.15.in
-
 # Y Torque            DI 17
 #net Y torque ppmc.0.din.15.in
-
 # Z Torque            DI 18
 #net Z torque ppmc.0.din.15.in
-
 # S Torque            DI 19
 #net Spindle torque ppmc.0.din.15.in
 
