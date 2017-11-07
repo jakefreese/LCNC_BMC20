@@ -31,17 +31,20 @@ net spindle-is-oriented => motion.spindle-is-oriented ppmc.0.din.07.in
 
 # TOOL CHANGER
 # Mag POS             DI 20
-*net mag-pos carousel.0.mag-pos ppmc.0.din.19.in
+net mag-pos carousel.0.mag-pos ppmc.0.din.19.in
 # Mag REF             DI 21 
 *net mag-ref carousel.0.mag-ref ppmc.0.din.20.in
-# Mag Right           DI 22  SSR 11
-*net arm-in carousel.0.arm-in ppmc.0.din.21.in
-*net arm-in-act carousel.0.arm-in-act ppmc.0.dout.10.out
-# Mag Left            DI 23  SSR 12
-*net arm-out carousel.0.arm-out ppmc.0.din.22.in
-*net arm-out-act carousel.0.arm-out-act ppmc.0.dout.11.out
+# ARM IN           DI 22 M66 P2  SSR 11 M64 P1  
+net arm-in-act motion.ppmc.0.din.21.in motion.digital-in-02
+net arm-in-act motion.ppmc.0.dout.10.out motion.digital-out-01
+# ARM OUT            DI 23 M66 P3 SSR 12 M64 P2
+net arm-out-act motion.ppmc.0.din.22.in motion.digital-in-03
+net arm-out-act motion.ppmc.0.dout.11.out motion.digital-out-02
 
-# Release Solenoid SSR 10, Tool Locked DI10, Tool Released DI11
+# Release Solenoid SSR 10, Release Tool DI10 M64 P3, Tool Released DI11 M66 P5
+net release-tool motion.ppmc.0.din.09.in motion.digital-in-05
+net tool-released motion.ppmc.0.dout.11.out motion.digital-out-03
+net release-tool motion.ppmc.0.din.09.in motion.digital-in-05
 *net release-tool (need to find something here ) ppmc.0.dout.09.out
 *net tool-released (need to find something here ) ppmc.0.din.10.in
 *net tool-locked (need to find something here ) ppmc.0.din.09.in
