@@ -4,49 +4,35 @@ loadrt carousel pockets=24 dir=1 encoding=index num_sense=4
 addf carousel.0 servo-thread
 addf conv-float-s32.2 servo-thread # G-code analog outputs are float-type
 
-*net car-enable motion.digital-out-00 carousel.0.enable  <---think I need to kill
-*net car-ready carousel.0.ready motion.digital-in-00      <---think I need to kill
+net car-enable motion.digital-out-00 carousel.0.enable  
+net car-ready carousel.0.ready motion.digital-in-00 
+net mag-pos carousel.0.mag-pos ppmc.0.din.19.in
+net mag-ref carousel.0.mag-ref ppmc.0.din.20.in
 
-# Carousel has PIN on #24 pocket, and PIN on motor shaft for each revolution
-# Looks like I need index mode and the Carousel will have to home to #24
 net car-pos-req motion.analog-out-00 conv-float-s32.2.in
-net car-pos-s32 conv-float-s32.2.out carousel.0.pocket-number  
+net car-pos-s32 conv-float-s32.0.out carousel.0.pocket-number  
 net bit0 carousel.0.sense-0
 net bit1 carousel.0.sense-1
 net bit2 carousel.0.sense-2
 net bit3 carousel.0.sense-3
 
-
 # Mag ROTATE    SSR 9
 net car-fwd carousel.0.motor-fwd ppmc.0.dout.08.out
-# Tool Caroseul rotate button DI29
-net jog-fwd carousel.0.jog-fwd ppmc.0.din.29.in
+net jog-fwd motion.digital-in-10 ppmc.0.din.29.in
+# M66 INPUTS 
+net spindle-is-oriented motion.digital-in-06 ppmc.0.din.07.in
+net spindle-stopped motion.digital-in-09 ppmc.0.din.XX.in-not
+net is-z-homed motion.digital-in-08 halui.joint.2.is-homed
+net arm-retracted motion.digital-in-02 ppmc.0.din.21.in
+net arm-extended motion.digital-in-03 ppmc.0.din.22.in
+net tool-released motion.digital-in-05 ppmc.0.din.10.in
+net tool-locked motion.digital-in-06 ppmc.0.din.09.in
+#M62-65   OUTPUTS 
+net orient-spindle motion.digital-out-06 ppmc.0.dout.05.out
+net arm-retract motion.digital-out-01 ppmc.0.dout.10.out 
+net arm-extend motion.digital-out-02 ppmc.0.dout.11.out
+net tool-release motion.digital-out-03 ppmc.0.dout.09.out 
 
-loadusr sim_pin carousel.0.jog-fwd
-
-# Orient Command             SSR 6
-# Orient Complete            DI 08
-net orient-spindle <= motion.spindle-orient ppmc.0.dout.05.out
-net spindle-is-oriented => motion.spindle-is-oriented ppmc.0.din.07.in
-
-# TOOL CHANGER
-# Mag POS             DI 20
-net mag-pos carousel.0.mag-pos ppmc.0.din.19.in
-# Mag REF             DI 21 
-net mag-ref carousel.0.mag-ref ppmc.0.din.20.in
-# ARM IN           DI 22 M66 P2  SSR 11 M64 P1  
-net arm-in-act motion.ppmc.0.din.21.in motion.digital-in-02
-net arm-in-act motion.ppmc.0.dout.10.out motion.digital-out-01
-# ARM OUT            DI 23 M66 P3 SSR 12 M64 P2
-net arm-out-act motion.ppmc.0.din.22.in motion.digital-in-03
-net arm-out-act motion.ppmc.0.dout.11.out motion.digital-out-02
-
-# Release Solenoid SSR 10 M64 P3
-net release-tool motion.ppmc.0.dout.09.out motion.digital-out-05
-# Tool Released DI11 M66 P5
-net tool-released motion.ppmc.0.din.10.in motion.digital-in-03
-# Tool Locked DI10 M66 P4
-net tool-locked motion.ppmc.0.din.09.in motion.digital-in-05
 
 net tool-prep-loop iocontrol.0.tool-prepare iocontrol.0.tool-prepared
 net tool-change-loop iocontrol.0.tool-change iocontrol.0.tool-changed
