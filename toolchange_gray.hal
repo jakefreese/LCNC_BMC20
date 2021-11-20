@@ -16,12 +16,12 @@ net bit1 carousel.0.sense-1
 net bit2 carousel.0.sense-2
 net bit3 carousel.0.sense-3
 
-# Mag ROTATE    SSR 9
-net car-fwd carousel.0.motor-fwd ppmc.0.dout.08.out
+# Mag ROTATE   
+net car-fwd carousel.0.motor-fwd ppmc.0.dout.16.out
 net jog-fwd motion.digital-in-10 ppmc.0.din.29.in
 # M66 INPUTS 
 net spindle-is-oriented motion.digital-in-06 ppmc.0.din.07.in
-net spindle-stopped motion.digital-in-09 ppmc.0.din.XX.in-not
+net spindle-stopped motion.digital-in-09 ppmc.0.din.02.in-not
 net is-z-homed motion.digital-in-08 halui.joint.2.is-homed
 net arm-retracted motion.digital-in-02 ppmc.0.din.21.in
 net arm-extended motion.digital-in-03 ppmc.0.din.22.in
@@ -29,9 +29,10 @@ net tool-released motion.digital-in-05 ppmc.0.din.10.in
 net tool-locked motion.digital-in-06 ppmc.0.din.09.in
 #M62-65   OUTPUTS 
 net orient-spindle motion.digital-out-06 ppmc.0.dout.05.out
-net arm-retract motion.digital-out-01 ppmc.0.dout.10.out 
-net arm-extend motion.digital-out-02 ppmc.0.dout.11.out
-net tool-release motion.digital-out-03 ppmc.0.dout.09.out 
+net arm-retract motion.digital-out-01 ppmc.0.dout.13.out 
+net arm-extend motion.digital-out-02 ppmc.0.dout.14.out
+net tool-release motion.digital-out-03 ppmc.0.dout.09.out
+net tool-change-enable motion.digital-out-04 ppmc.0.dout.02.out
 
 
 net tool-prep-loop iocontrol.0.tool-prepare iocontrol.0.tool-prepared
