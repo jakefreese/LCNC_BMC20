@@ -1,16 +1,16 @@
 o<toolchange> sub
 
 ; M66
-; P0 carosuel completed ???  <- what will signal carosuel complete
+; P0 carosuel completed 
 ; P1 spindle-is-aligned
-; P2 arm-in
-; P3 arm-out
+; P2 arm-retracted
+; P3 arm-extended
 ; P4  tool-locked
 ; P5  tool-released 
 
 ; M64 
-; P1  arm-in-act
-; P2  arm-out-act
+; P2  arm-extend
+; P1  arm-retract
 ; P3  release-tool
 
 
@@ -27,7 +27,7 @@ o<toolchange> sub
 O100 IF [#<tool_in_spindle> GT 0]
     G53 G0 Z -4
     
-    M63 P2 ; move arm in
+    M63 P2 ; extend arm
     M66 P2 L3 Q5 ; wait for arm-in = true
     O104 if [#5399 LT 0]
         (abort, failed to move arm in)
